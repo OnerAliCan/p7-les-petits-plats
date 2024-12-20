@@ -1,0 +1,73 @@
+main {
+	width: 1440px;
+}
+.selector-for-some-widget {
+	box-sizing: content-box;
+}
+
+#header-container {
+	position: relative;
+	width: 100%;
+	height: 667px;
+	overflow: hidden;
+	object-fit: cover;
+}
+
+#header-photo {
+	position: absolute;
+	top: -30%;
+	/* left: -50px; */
+	z-index: 0;
+	width: 100%;
+	height: auto;
+	filter: brightness(0.7);
+}
+
+#header-logo {
+	position: absolute;
+	width: 207px;
+	height: 25px;
+	margin-top: 51px;
+	margin-left: 69px;
+	z-index: 1;
+}
+
+#header-container h1 {
+	position: absolute;
+	width: 700px;
+	margin-left: 375px;
+	margin-top: 245px;
+	/* transform: translateY(180px); */
+	text-align: center;
+	font-family: "Anton", serif;
+	font-weight: 400;
+	font-style: normal;
+	font-size: 44px;
+	font-weight: 400;
+	color: #ffd15b;
+	line-height: 66px; /* L'espacement entre les lignes sera de 24 pixels */
+}
+
+#search-bar-container {
+	position: absolute;
+	width: 954px;
+	height: 72px;
+	margin-left: 243px;
+	margin-top: 406px;
+}
+
+#search-bar {
+	width: 100%;
+	height: 100%;
+}
+
+.search-bar-container button {
+	float: right;
+	padding: 6px 10px;
+	margin-top: 8px;
+	margin-right: 16px;
+	background: #ddd;
+	font-size: 17px;
+	border: none;
+	cursor: pointer;
+}
