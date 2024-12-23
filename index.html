@@ -13,22 +13,42 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="style/style.css">
-    <title>Hello, world!</title>
+    <title>Les petits plats</title>
 </head>
 
 <body>
-    <div id="header-container">
-        <img src="assets/header.jpg" id="header-photo"
-            alt="photo representant un plat avec des baguettes posées sur le bol">
-        <img src="assets/Logo.svg" id="header-logo" alt="logo de l'entreprise Les Petits Plats">
-        <h1>CHERCHEZ PARMI PLUS DE 1500 RECETTES
-            DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</h1>
 
-        <div id="search-bar-container">
-            <input type="text" id="search-bar" placeholder="Search.." name="search">
-            <button type="submit" id="search-button"><img src="assets/search-glass.svg" alt=""></button>
+
+    <header>
+        <div id="header-container">
+            <img src="assets/header.jpg" id="header-photo"
+                alt="photo representant un plat avec des baguettes posées sur le bol">
+            <img src="assets/Logo.svg" id="header-logo" alt="logo de l'entreprise Les Petits Plats">
+            <h1>CHERCHEZ PARMI PLUS DE 1500 RECETTES
+                DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</h1>
+
+            <div class="search-bar-container">
+                <div class="search-bar"> <input type="text" placeholder="Rechercher une recette, un ingrédient, ...">
+                </div>
+                <button id="search-button"><img id="search-glass" src="assets/search-glass.svg" alt=""></button>
+
+            </div>
         </div>
-    </div>
+    </header>
+    <main>
+        <div class="dropdown">
+            <button onclick="dropdownShow()" class="dropbtn" id="dropdown-button">Ingrédients</button>
+            <div id="dropdown-items" class="dropdown-content">
+                <div class="input-wrapper"> <input type="text" placeholder="Search.." id="dropdown-search"
+                        onkeyup="filterFunction()">
+                    <img class="clear-button" onclick="clearInput()" src="assets/x.svg" alt="">
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="scripts/recipes.js"></script>
+    <script src="scripts/script.js"></script>
+
 </body>
 
 </html>
