@@ -50,6 +50,10 @@ header {
 	line-height: 66px;
 }
 
+::-webkit-scrollbar {
+	display: none;
+}
+
 body {
 	background-color: #ededed;
 }
@@ -67,7 +71,6 @@ body {
 	border-radius: 5px;
 	width: 954px;
 	height: 72px;
-
 	font-family: Manrope;
 	font-size: 16px;
 	font-weight: 400;
@@ -117,16 +120,15 @@ input[type="text" i] {
 	width: 27px;
 	height: 28px;
 }
+
 .dropbtn {
 	background-color: #ffffff;
 	color: #000000;
 	font-size: 16px;
 	border: none;
 	cursor: pointer;
-
 	width: 195px;
 	height: 56px;
-
 	padding: 17px 92px 17px 16px;
 	border-radius: 11px;
 }
@@ -148,15 +150,20 @@ input[type="text" i] {
 .dropdown {
 	position: relative;
 	display: inline-block;
+	margin-left: 104px;
+	margin-top: 21px;
 }
 
 .dropdown-content {
 	display: none;
 	width: 195px;
+	max-height: 215px;
 	position: absolute;
 	background-color: #ffffff;
-	overflow: auto;
-	z-index: 1;
+	/* overflow: hidden; */
+	overflow: scroll;
+
+	z-index: 10;
 	border-radius: 0 0 11px 11px;
 }
 

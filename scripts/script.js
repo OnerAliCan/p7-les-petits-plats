@@ -1,11 +1,12 @@
+// eslint-disable-next-line no-unused-vars
 function dropdownShow() {
 	document.getElementById("dropdown-items").classList.toggle("show");
 	// console.log(typeof recipes);
 	let ingredientNameArray = [];
 
+	// eslint-disable-next-line no-undef
 	recipes.forEach((recipe) => {
 		const recipeIngredients = recipe.ingredients;
-
 		recipeIngredients.forEach((IngredientObject) => {
 			const ingredientName = IngredientObject.ingredient;
 			//ajouter la fonction qui enlève les doublons
@@ -38,8 +39,6 @@ function dropdownShow() {
 		itemDropdown.addEventListener("click", () => saveSelect(ingredient));
 	});
 
-	// ["lait de coco", "lait de vache"]
-
 	document
 		.getElementById("dropdown-button")
 		.classList.toggle("border-radius-bottom");
@@ -51,7 +50,9 @@ function filterFunction() {
 	const div = document.getElementById("dropdown-items");
 	const a = div.getElementsByTagName("a");
 	for (let i = 0; i < a.length; i++) {
+		// eslint-disable-next-line no-undef
 		txtValue = a[i].textContent || a[i].innerText;
+		// eslint-disable-next-line no-undef
 		if (txtValue.toUpperCase().indexOf(filter) > -1) {
 			a[i].style.display = "";
 		} else {
@@ -60,12 +61,14 @@ function filterFunction() {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars
 function clearInput() {
 	const input = document.getElementById("dropdown-search");
 	input.value = "";
 	input.focus();
 	filterFunction(); // Remet le focus sur le champ input
 }
+
 function saveSelect(ingredient) {
 	console.log(ingredient);
 }

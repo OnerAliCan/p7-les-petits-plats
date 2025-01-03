@@ -36,12 +36,51 @@
         </div>
     </header>
     <main>
-        <div class="dropdown">
-            <button onclick="dropdownShow()" class="dropbtn" id="dropdown-button">Ingrédients</button>
-            <div id="dropdown-items" class="dropdown-content">
-                <div class="input-wrapper"> <input type="text" placeholder="Search.." id="dropdown-search"
-                        onkeyup="filterFunction()">
-                    <img class="clear-button" onclick="clearInput()" src="assets/x.svg" alt="">
+        <div class="dropdown-container">
+            <div class="dropdown">
+                <button onclick="dropdownShow()" class="dropbtn" id="dropdown-button">Ingrédients</button>
+                <div id="dropdown-items" class="dropdown-content">
+                    <div class="input-wrapper"> <input type="text" placeholder="Search.." id="dropdown-search"
+                            onkeyup="filterFunction()">
+                        <img class="clear-button" onclick="clearInput()" src="assets/x.svg" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button onclick="dropdownShow()" class="dropbtn" id="dropdown-button">Appareils</button>
+                <div id="dropdown-items" class="dropdown-content">
+                    <div class="input-wrapper"> <input type="text" placeholder="Search.." id="dropdown-search"
+                            onkeyup="filterFunction()">
+                        <img class="clear-button" onclick="clearInput()" src="assets/x.svg" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button onclick="dropdownShow()" class="dropbtn" id="dropdown-button">Ustensiles</button>
+                <div id="dropdown-items" class="dropdown-content">
+                    <div class="input-wrapper"> <input type="text" placeholder="Search.." id="dropdown-search"
+                            onkeyup="filterFunction()">
+                        <img class="clear-button" onclick="clearInput()" src="assets/x.svg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="recipe-section">
+            <div class="recipe-card">
+                <div class="recipe-card-image-container">
+                    <img src="" alt="recipe image">
+                </div>
+                <div class="recipe-text-container">
+                    <div class="recipe-title">
+                        <h3>Limonade de coco</h3>
+                    </div>
+                    <div class="recipe-and-ingredients-container">
+                        <div class="recipe-container">
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
