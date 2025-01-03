@@ -4,7 +4,6 @@ function setEvents() {
 		.addEventListener("click", () => dropdownShow());
 }
 
-// eslint-disable-next-line no-unused-vars
 function dropdownShow() {
 	document.querySelector(".dropdown-content").classList.toggle("show");
 	// console.log(typeof recipes);
