@@ -1,58 +1,53 @@
-// eslint-disable-next-line no-unused-vars
-function dropdownShow() {
-	document.getElementById("dropdown-items").classList.toggle("show");
-	// console.log(typeof recipes);
-	let ingredientNameArray = [];
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 
-	// eslint-disable-next-line no-undef
-	recipes.forEach((recipe) => {
-		const recipeIngredients = recipe.ingredients;
-		recipeIngredients.forEach((IngredientObject) => {
-			const ingredientName = IngredientObject.ingredient;
-			//ajouter la fonction qui enlève les doublons
-			ingredientNameArray.push(ingredientName);
-			// console.log(ingredientNameArray);
+function setEvents() {
+	const dropdownButtons = document.querySelectorAll(".dropdown-button");
+
+	dropdownButtons.forEach((dropdownButton, index) => {
+		const dropdownContent = dropdownButton.nextElementSibling;
+
+		dropdownButton.addEventListener("click", () =>
+			dropdownShow(
+				dropdownContent,
+				dropdownButtons,
+				dropdownButton,
+				index
+			)
+		);
+		return dropdownButton;
+	});
+
+	const dropdownSearchInputs = document.querySelectorAll(".dropdown-search");
+	console.log(dropdownSearchInputs);
+
+	dropdownSearchInputs.forEach((dropdownSearchInput, index) => {
+		dropdownSearchInput.addEventListener("keyup", () => {
+			filterList(dropdownSearchInputs, dropdownSearchInput, index);
 		});
 	});
-
-	const uniqueIngredientNameArray = [
-		...new Set(
-			ingredientNameArray.map((ingredient) =>
-				ingredient.trim().toLowerCase()
-			)
-		),
-	];
-
-	const formattedIngredientArray = uniqueIngredientNameArray
-		.map(
-			(ingredient) =>
-				ingredient.charAt(0).toUpperCase() + ingredient.slice(1)
-		)
-		.sort();
-
-	formattedIngredientArray.forEach((ingredient) => {
-		const itemDropdown = document.createElement("a");
-		const dropdownItems = document.getElementById("dropdown-items");
-		itemDropdown.classList.add("item-dropdown");
-		itemDropdown.innerText = ingredient;
-		dropdownItems.appendChild(itemDropdown);
-		itemDropdown.addEventListener("click", () => saveSelect(ingredient));
-	});
-
-	document
-		.getElementById("dropdown-button")
-		.classList.toggle("border-radius-bottom");
 }
 
-function filterFunction() {
-	const input = document.getElementById("dropdown-search");
-	const filter = input.value.toUpperCase();
-	const div = document.getElementById("dropdown-items");
+function dropdownShow(dropdownContent, dropdownButtons, dropdownButton, index) {
+	// console.log(dropdownButtons[index].nextElementSibling);
+	dropdownButtons[index].nextElementSibling.classList.toggle("show");
+
+	const itemDropdowns = dropdownContent.querySelectorAll(".item-dropdown");
+	itemDropdowns.forEach((itemDropdown) => {
+		itemDropdown.addEventListener("click", () => saveSelect(itemDropdown));
+	});
+
+	dropdownButton.classList.toggle("border-radius-bottom");
+}
+
+function filterList(dropdownSearchInputs, dropdownSearchInput, index) {
+	// console.log(dropdownSearchInputs[index].value);
+	// const input = document.querySelector(".dropdown-search");
+	const filter = dropdownSearchInputs[index].value.toUpperCase();
+	const div = document.querySelectorAll(".dropdown-content")[index];
 	const a = div.getElementsByTagName("a");
 	for (let i = 0; i < a.length; i++) {
-		// eslint-disable-next-line no-undef
 		txtValue = a[i].textContent || a[i].innerText;
-		// eslint-disable-next-line no-undef
 		if (txtValue.toUpperCase().indexOf(filter) > -1) {
 			a[i].style.display = "";
 		} else {
@@ -61,14 +56,21 @@ function filterFunction() {
 	}
 }
 
-// eslint-disable-next-line no-unused-vars
 function clearInput() {
-	const input = document.getElementById("dropdown-search");
+	const input = document.querySelector(".dropdown-search");
 	input.value = "";
 	input.focus();
-	filterFunction(); // Remet le focus sur le champ input
+	filterList(dropdownSearchInputs, dropdownSearchInput, index);
 }
 
-function saveSelect(ingredient) {
-	console.log(ingredient);
+function saveSelect(itemDropdown) {
+	console.log(itemDropdown.textContent);
 }
+
+async function init() {
+	setEvents();
+}
+
+window.onload = async function () {
+	await init();
+};

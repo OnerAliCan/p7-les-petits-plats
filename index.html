@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@200..800&display=swap"
@@ -30,47 +30,99 @@
             <div class="search-bar-container">
                 <div class="search-bar"> <input type="text" placeholder="Rechercher une recette, un ingrédient, ...">
                 </div>
-                <button id="search-button"><img id="search-glass" src="assets/search-glass.svg" alt=""></button>
+                <button id="header-search-button"><img id="search-glass" src="assets/search-glass.svg" alt=""></button>
 
             </div>
         </div>
     </header>
     <main>
-        <div class="dropdown-container">
-            <div class="dropdown">
-                <button onclick="dropdownShow()" class="dropbtn" id="dropdown-button">Ingrédients</button>
-                <div id="dropdown-items" class="dropdown-content">
-                    <div class="input-wrapper"> <input type="text" placeholder="Search.." id="dropdown-search"
-                            onkeyup="filterFunction()">
-                        <img class="clear-button" onclick="clearInput()" src="assets/x.svg" alt="">
-                    </div>
-                </div>
-            </div>
 
-            <div class="dropdown">
-                <button onclick="dropdownShow()" class="dropbtn" id="dropdown-button">Appareils</button>
-                <div id="dropdown-items" class="dropdown-content">
-                    <div class="input-wrapper"> <input type="text" placeholder="Search.." id="dropdown-search"
-                            onkeyup="filterFunction()">
-                        <img class="clear-button" onclick="clearInput()" src="assets/x.svg" alt="">
+        <div class="dropdown-section">
+            <div class="dropdown-buttons-container">
+                <div class="dropdown">
+                    <button class="dropbtn dropdown-button">Ingrédients</button>
+                    <div class="dropdown-content">
+                        <div class="input-wrapper"> <input type="text" placeholder="" class="dropdown-search">
+                            <img class="clear-button" onclick="clearInput()" src="assets/x.svg" alt="">
+                            <img class="dropdown-search-glass" src="assets/search-glass-black.svg" alt="">
+                        </div>
+                        <a class="item-dropdown">Ail</a>
+                        <a class="item-dropdown">Ananas</a>
+                        <a class="item-dropdown">Banane</a>
+                        <a class="item-dropdown">Banane</a>
+                        <a class="item-dropdown">Banane</a>
+                        <a class="item-dropdown">Banane</a>
+                        <a class="item-dropdown">Bananes</a>
+                        <a class="item-dropdown">Basilic</a>
+                        <a class="item-dropdown">Beurre</a>
+                        <a class="item-dropdown">Beurre fondu</a>
+                        <a class="item-dropdown">Beurre salé</a>
+                        <a class="item-dropdown">Bicarbonate</a>
+                        <a class="item-dropdown">Blanc de dinde</a>
+                        <a class="item-dropdown">Boudoirs</a>
+                        <a class="item-dropdown">Carotte</a>
+                        <a class="item-dropdown">Champignons de paris</a>
+                        <a class="item-dropdown">Chocolat</a>
+                        <a class="item-dropdown">Chocolat au lait</a>
+                        <a class="item-dropdown">Chocolat noir</a>
+                        <a class="item-dropdown">Chocolat noir en pépites</a>
+                        <a class="item-dropdown">Citron</a>
+                        <a class="item-dropdown">Citron vert</a>
+                        <a class="item-dropdown">Concombre</a>
+                        <a class="item-dropdown">Coulis de tomate</a>
+                        <a class="item-dropdown">Coulis de tomates</a>
+                        <a class="item-dropdown">Courgette</a>
+                        <a class="item-dropdown">Crème de coco</a>
+                        <a class="item-dropdown">Crème fraîche</a>
+                        <a class="item-dropdown">Crème liquide</a>
                     </div>
                 </div>
-            </div>
 
-            <div class="dropdown">
-                <button onclick="dropdownShow()" class="dropbtn" id="dropdown-button">Ustensiles</button>
-                <div id="dropdown-items" class="dropdown-content">
-                    <div class="input-wrapper"> <input type="text" placeholder="Search.." id="dropdown-search"
-                            onkeyup="filterFunction()">
-                        <img class="clear-button" onclick="clearInput()" src="assets/x.svg" alt="">
+                <div class="dropdown">
+                    <button class="dropbtn dropdown-button">Appareils</button>
+                    <div class="dropdown-content">
+                        <div class="input-wrapper"> <input type="text" placeholder="Search.." class="dropdown-search">
+                            <img class="clear-button" onclick="clearInput()" src="assets/x.svg" alt="">
+                        </div>
+                        <a class="item-dropdown">Saladier</a>
+                        <a class="item-dropdown">Blender</a>
+                        <a class="item-dropdown">Cocotte</a>
+                        <a class="item-dropdown">Couteau</a>
+                        <a class="item-dropdown">Bonjour</a>
+                        <a class="item-dropdown">Appareil</a>
+                        <a class="item-dropdown">Appareil2</a>
+                        <a class="item-dropdown">Appareil3</a>
+                        <a class="item-dropdown">Appareil4</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropbtn dropdown-button">Ustensiles</button>
+                    <div class="dropdown-content">
+                        <div class="input-wrapper"> <input type="text" placeholder="Search.." class="dropdown-search">
+                            <img class="clear-button" onclick="clearInput()" src="assets/x.svg" alt="">
+                        </div>
+                        <a class="item-dropdown">Ustensiles1</a>
+                        <a class="item-dropdown">Ustensiles2</a>
+                        <a class="item-dropdown">Ustensiles3</a>
+                        <a class="item-dropdown">Ustensiles4</a>
+                        <a class="item-dropdown">Ustensiles5</a>
+                        <a class="item-dropdown">Ustensiles6</a>
+                        <a class="item-dropdown">Ustensiles7</a>
+                        <a class="item-dropdown">Ustensiles8</a>
+                        <a class="item-dropdown">Ustensiles9</a>
                     </div>
                 </div>
             </div>
+            <h2 id="recipe-number">1500 Recettes</h2>
         </div>
         <div class="recipe-section">
             <div class="recipe-card">
                 <div class="recipe-card-image-container">
                     <img src="assets/checker.png" alt="recipe image">
+                </div>
+                <div class="recipe-prep-time">
+                    <p>10mn</p>
                 </div>
                 <div class="recipe-text-container">
                     <div class="recipe-title">
@@ -116,6 +168,18 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="recipe-card">
+            </div>
+            <div class="recipe-card">
+            </div>
+            <div class="recipe-card">
+            </div>
+            <div class="recipe-card">
+            </div>
+            <div class="recipe-card">
+            </div>
+            <div class="recipe-card">
             </div>
         </div>
     </main>
