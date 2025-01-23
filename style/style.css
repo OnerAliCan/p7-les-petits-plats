@@ -111,22 +111,27 @@ header {
 }
 
 .dropdown-section {
+  display: flex;
+  flex-direction: column;
   margin-left: 104px;
   margin-top: 21px;
+  row-gap: 21px;
+}
+.dropdown-section .dropdowns-and-recipe-number-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 400px;
 }
-.dropdown-section .dropdown-buttons-container {
+.dropdown-section .dropdowns-and-recipe-number-container .dropdown-buttons-container {
   display: flex;
   gap: 66px;
 }
-.dropdown-section .dropdown-buttons-container .dropdown {
+.dropdown-section .dropdowns-and-recipe-number-container .dropdown-buttons-container .dropdown {
   position: relative;
   display: inline-block;
 }
-.dropdown-section .dropdown-buttons-container .dropdown .dropbtn {
+.dropdown-section .dropdowns-and-recipe-number-container .dropdown-buttons-container .dropdown .dropbtn {
   background-color: #fff;
   color: #000;
   font-size: 16px;
@@ -137,17 +142,41 @@ header {
   padding: 17px 92px 17px 16px;
   border-radius: 11px;
 }
-.dropdown-section .dropdown-buttons-container .dropdown .border-radius-bottom {
+.dropdown-section .dropdowns-and-recipe-number-container .dropdown-buttons-container .dropdown .border-radius-bottom {
   border-radius: 11px 11px 0 0;
 }
-.dropdown-section .dropdown-buttons-container .dropdown .dropdown-content {
+.dropdown-section .dropdowns-and-recipe-number-container .dropdown-buttons-container .dropdown .dropdown-content {
   padding-left: 16px;
 }
-.dropdown-section h2 {
+.dropdown-section .dropdowns-and-recipe-number-container h2 {
   font-family: Anton;
   font-size: 21px;
   font-weight: 400;
   margin: 0 102px 0 0;
+}
+.dropdown-section .selected-item-container {
+  display: none;
+}
+.dropdown-section .selected-item-container .selected-item {
+  position: relative;
+  box-sizing: border-box;
+  width: 203px;
+  height: 53px;
+  padding: 17px 18px;
+  border-radius: 10px;
+  background-color: #ffd15b;
+}
+.dropdown-section .selected-item-container .selected-item .selected-item-text {
+  font-family: Manrope;
+  font-size: 14px;
+  font-weight: 400;
+}
+.dropdown-section .selected-item-container .selected-item .selected-item-clear-button {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: 21px;
+  right: 18px;
 }
 
 .dropdown-content {
