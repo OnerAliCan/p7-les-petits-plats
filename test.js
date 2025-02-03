@@ -1,30 +1,30 @@
-recettes (initiales)
-Filtre modifié
-recettes -(filtre)-> recettesFiltrées
-filtre: texte saisi dans le champ de recherche -> ingrédients selecttionnés -> ustensils select. -> appareils select.
-const receipes = [.....];
-let ingredients = [];
-let aplpiances = [];
-let ustensils = [];
-function filter()
-{
-	let r = [...recipes];
-	r = r (filter by text in search field);
-	r = r (filter by selected ingredients)
-	r = r (filter by selected ustensils)
-	r = r (filter by selected appliences)
-	
-	ingredients = extract ingredients from (r);
-	populateList(ingredients, ingredientsContainer);
-	
-	appliances = extract appliences from (r);
-	populateList(appliances, appliancesContainer);
-	ustensils = extract ustensils from (r);
-	populateList(ustensils, ustensilsContainer);
-	
-	display (r) in DOM
+for (let i = 0; i < dropdownButtons.length; i++) {
+  const dropdownButton = dropdownButtons[i];
+  const dropdownContent = dropdownButton.nextElementSibling;
+
+  dropdownButton.addEventListener("click", () =>
+    dropdownShow(dropdownButton, dropdownContent)
+  );
+
+  // Ajoutez les gestionnaires d'événements pour les éléments de dropdown ici
+  const dropdownItems = dropdownContent.querySelectorAll(".item-dropdown");
+  for (let j = 0; j < dropdownItems.length; j++) {
+    const dropdownItem = dropdownItems[j];
+    dropdownItem.addEventListener("click", () => saveSelect(dropdownItem));
+  }
 }
-window.addEventListener("load", () => {
-	filter();
-});
-// not this: window.addEventListener("load", filter);
+
+function dropdownShow(dropdownButton, dropdownContent) {
+  dropdownButton.nextElementSibling.classList.toggle("show");
+  dropdownButton.classList.toggle("border-radius-bottom");
+}
+
+function saveSelect(dropdownItem) {
+  let selectedElementText =
+    (dropdownItem.parentElement.parentElement.parentElement.parentElement.nextElementSibling.childNodes[1].childNodes[1].innerText =
+      dropdownItem.innerText);
+
+  document.querySelector(".selected-item").classList.add("show");
+
+  console.log("yo ", selectedElementText);
+}

@@ -167,8 +167,16 @@ header {
     }
   }
   .selected-item-container {
-    display: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
     .selected-item {
+      display: none;
+
+      &.filter-display {
+        display: block;
+      }
+
       position: relative;
       box-sizing: border-box;
       width: 203px;

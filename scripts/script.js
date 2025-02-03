@@ -1,7 +1,7 @@
 window.addEventListener("load", () => {
   setEvents();
-  //   filter();
 });
+console.log(recipes[0]);
 
 function setEvents() {
   const dropdownButtons = document.querySelectorAll(".dropdown-button");
@@ -11,8 +11,15 @@ function setEvents() {
     const dropdownContent = dropdownButton.nextElementSibling;
 
     dropdownButton.addEventListener("click", () =>
-      dropdownShow(dropdownButton, dropdownContent, i)
+      dropdownShow(dropdownButton)
     );
+
+    const dropdownItems = dropdownContent.querySelectorAll(".item-dropdown");
+
+    for (let j = 0; j < dropdownItems.length; j++) {
+      const dropdownItem = dropdownItems[j];
+      dropdownItem.addEventListener("click", () => saveSelect(dropdownItem));
+    }
   }
 
   const dropdownSearchInputs = document.querySelectorAll(".dropdown-search");
@@ -47,27 +54,41 @@ function filterList(dropdownSearchInput, index) {
   }
 }
 
-function dropdownShow(dropdownButton, dropdownContent) {
+function dropdownShow(dropdownButton) {
   dropdownButton.nextElementSibling.classList.toggle("show");
-
-  const dropdownItems = dropdownContent.querySelectorAll(".item-dropdown");
-
-  for (let i = 0; i < dropdownItems.length; i++) {
-    const dropdownItem = dropdownItems[i];
-
-    dropdownItem.addEventListener("click", () => saveSelect(dropdownItem));
-  }
+  dropdownButton.classList.toggle("border-radius-bottom");
 }
 
 function saveSelect(dropdownItem) {
-  console.log("hey");
+  console.log("yo ", dropdownItem);
+
+  console.log(this.innerText);
+
   let selectedElementText =
     (dropdownItem.parentElement.parentElement.parentElement.parentElement.nextElementSibling.childNodes[1].childNodes[1].innerText =
       dropdownItem.innerText);
 
-  document.querySelector(".selected-item-container").classList.add("show");
+  const selectedItem = document.querySelector(".selected-item");
 
-  console.log(selectedElementText);
+  const clonedSelectedItem = selectedItem.cloneNode(true);
+
+  clonedSelectedItem.firstChild.innerText = selectedElementText;
+  clonedSelectedItem.classList.add("filter-display");
+
+  selectedItem.parentElement.appendChild(clonedSelectedItem);
+
+  const selectedItemClearButtons = document.querySelectorAll(
+    ".selected-item-clear-button"
+  );
+
+  for (let i = 0; i < selectedItemClearButtons.length; i++) {
+    const selectedItemClearButton = selectedItemClearButtons[i];
+    console.log("hey");
+
+    selectedItemClearButton.addEventListener("click", function () {
+      this.parentElement.classList.remove("filter-display");
+    });
+  }
 }
 
 function clearInput(index) {
