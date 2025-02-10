@@ -39,6 +39,8 @@
             <input
               type="text"
               placeholder="Rechercher une recette, un ingrédient, ..."
+              autofocus
+              autocomplete="on"
             />
           </div>
           <button id="header-search-button">
@@ -144,32 +146,34 @@
           <h2 id="recipe-number">1500 Recettes</h2>
         </div>
         <div class="selected-item-container">
-          <template class="selected-item">
-            <span class="selected-item-text"></span>
-            <img class="selected-item-clear-button" src="assets/x.svg" alt="" />
+          <template id="selected-item-template">
+            <div class="selected-item">
+              <span class="selected-item-text"></span>
+              <img
+                class="selected-item-clear-button"
+                src="assets/x.svg"
+                alt=""
+              />
+            </div>
           </template>
         </div>
       </div>
-      <div class="recipe-section">
+      <template id="recipe-card-template">
         <div class="recipe-card">
           <div class="recipe-card-image-container">
-            <img src="assets/checker.png" alt="recipe image" />
+            <img src="" alt="recipe image" />
           </div>
           <div class="recipe-prep-time">
-            <p>10mn</p>
+            <p></p>
           </div>
           <div class="recipe-text-container">
             <div class="recipe-title">
-              <h3>Limonade de coco</h3>
+              <h3></h3>
             </div>
             <div class="recipe-ingredients-container">
               <div class="recipe-container">
                 <h4>RECETTE</h4>
-                <p id="recipe-steps">
-                  Mettre les glaçons à votre goût dans le blender, ajouter le
-                  lait, la crème de coco, le jus de 2 citrons et le sucre. Mixer
-                  jusqu'à avoir la consistence désirée.
-                </p>
+                <p id="recipe-steps"></p>
               </div>
               <div class="ingredients-container">
                 <div class="ingredients-title-container">
@@ -177,41 +181,36 @@
                 </div>
                 <div class="ingredients-items-section">
                   <div class="ingredients-items-container">
-                    <h5>Lait de coco</h5>
-                    <p id="ingredients-quantity">400ml</p>
+                    <h5></h5>
+                    <p id="ingredients-quantity"></p>
                   </div>
                   <div class="ingredients-items-container">
-                    <h5>Jus de citron</h5>
-                    <p id="ingredients-quantity">2</p>
+                    <h5></h5>
+                    <p id="ingredients-quantity"></p>
                   </div>
                   <div class="ingredients-items-container">
-                    <h5>Crème de coco</h5>
-                    <p id="ingredients-quantity">4 cuillères</p>
+                    <h5></h5>
+                    <p id="ingredients-quantity"></p>
                   </div>
                   <div class="ingredients-items-container">
-                    <h5>Sucre</h5>
-                    <p id="ingredients-quantity">20g</p>
+                    <h5></h5>
+                    <p id="ingredients-quantity"></p>
                   </div>
                   <div class="ingredients-items-container">
-                    <h5>Glaçons</h5>
-                    <p id="ingredients-quantity">2</p>
+                    <h5></h5>
+                    <p id="ingredients-quantity"></p>
                   </div>
                   <div class="ingredients-items-container">
-                    <h5>Glaçons</h5>
-                    <p id="ingredients-quantity">2</p>
+                    <h5></h5>
+                    <p id="ingredients-quantity"></p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="recipe-card"></div>
-        <div class="recipe-card"></div>
-        <div class="recipe-card"></div>
-        <div class="recipe-card"></div>
-        <div class="recipe-card"></div>
-        <div class="recipe-card"></div>
-      </div>
+      </template>
+      <div class="recipe-section"></div>
     </main>
     <script src="scripts/recipes.js"></script>
     <script src="scripts/script.js"></script>

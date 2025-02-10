@@ -160,7 +160,7 @@ header {
   gap: 25px;
 }
 .dropdown-section .selected-item-container .selected-item {
-  display: none;
+  display: block;
   position: relative;
   box-sizing: border-box;
   width: 203px;
@@ -168,9 +168,6 @@ header {
   padding: 17px 18px;
   border-radius: 10px;
   background-color: #ffd15b;
-}
-.dropdown-section .selected-item-container .selected-item.filter-display {
-  display: block;
 }
 .dropdown-section .selected-item-container .selected-item .selected-item-text {
   font-family: Manrope;

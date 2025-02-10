@@ -171,11 +171,11 @@ header {
     flex-wrap: wrap;
     gap: 25px;
     .selected-item {
-      display: none;
+      display: block;
 
-      &.filter-display {
-        display: block;
-      }
+      // &.filter-display {
+      //   display: block;
+      // }
 
       position: relative;
       box-sizing: border-box;
