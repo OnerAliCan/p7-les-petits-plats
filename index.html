@@ -30,8 +30,7 @@
           alt="logo de l'entreprise Les Petits Plats"
         />
         <h1>
-          CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN,SIMPLES ET
-          DÉLICIEUSES
+          CHERCHEZ PARMI PLUS DE 50 RECETTES DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES
         </h1>
 
         <div class="search-bar-container">
@@ -50,12 +49,15 @@
       </div>
     </header>
     <main>
+      <template id="item-dropdown-template">
+        <a class="item-dropdown"></a>
+      </template>
       <div class="dropdown-section">
         <div class="dropdowns-and-recipe-number-container">
           <div class="dropdown-buttons-container">
-            <div class="dropdown">
+            <div class="dropdown" id="ingredients-dropdown-button">
               <button class="dropbtn dropdown-button">Ingrédients</button>
-              <div class="dropdown-content">
+              <div class="dropdown-content" id="dropdown-ingredients-content">
                 <div class="input-wrapper">
                   <input type="text" placeholder="" class="dropdown-search" />
                   <img class="clear-button" src="assets/x.svg" alt="" />
@@ -65,39 +67,11 @@
                     alt=""
                   />
                 </div>
-                <a class="item-dropdown">Ail</a>
-                <a class="item-dropdown">Ananas</a>
-                <a class="item-dropdown">Banane</a>
-                <a class="item-dropdown">Banane</a>
-                <a class="item-dropdown">Banane</a>
-                <a class="item-dropdown">Banane</a>
-                <a class="item-dropdown">Bananes</a>
-                <a class="item-dropdown">Basilic</a>
-                <a class="item-dropdown">Beurre</a>
-                <a class="item-dropdown">Beurre fondu</a>
-                <a class="item-dropdown">Beurre salé</a>
-                <a class="item-dropdown">Bicarbonate</a>
-                <a class="item-dropdown">Blanc de dinde</a>
-                <a class="item-dropdown">Boudoirs</a>
-                <a class="item-dropdown">Carotte</a>
-                <a class="item-dropdown">Champignons de paris</a>
-                <a class="item-dropdown">Chocolat</a>
-                <a class="item-dropdown">Chocolat au lait</a>
-                <a class="item-dropdown">Chocolat noir</a>
-                <a class="item-dropdown">Chocolat noir en pépites</a>
-                <a class="item-dropdown">Citron</a>
-                <a class="item-dropdown">Citron vert</a>
-                <a class="item-dropdown">Concombre</a>
-                <a class="item-dropdown">Coulis de tomate</a>
-                <a class="item-dropdown">Coulis de tomates</a>
-                <a class="item-dropdown">Courgette</a>
-                <a class="item-dropdown">Crème de coco</a>
-                <a class="item-dropdown">Crème fraîche</a>
-                <a class="item-dropdown">Crème liquide</a>
+                <div id="dropdown-ingredients-container"></div>
               </div>
             </div>
 
-            <div class="dropdown">
+            <div class="dropdown" id="appliances-dropdown-button">
               <button class="dropbtn dropdown-button">Appareils</button>
               <div class="dropdown-content">
                 <div class="input-wrapper">
@@ -108,15 +82,6 @@
                   />
                   <img class="clear-button" src="assets/x.svg" alt="" />
                 </div>
-                <a class="item-dropdown">Saladier</a>
-                <a class="item-dropdown">Blender</a>
-                <a class="item-dropdown">Cocotte</a>
-                <a class="item-dropdown">Couteau</a>
-                <a class="item-dropdown">Bonjour</a>
-                <a class="item-dropdown">Appareil</a>
-                <a class="item-dropdown">Appareil2</a>
-                <a class="item-dropdown">Appareil3</a>
-                <a class="item-dropdown">Appareil4</a>
               </div>
             </div>
 
@@ -143,7 +108,9 @@
               </div>
             </div>
           </div>
-          <h2 id="recipe-number">1500 Recettes</h2>
+          <h2 id="recipe-number">
+            <span class="recipe-length"></span> Recettes
+          </h2>
         </div>
         <div class="selected-item-container">
           <template id="selected-item-template">
