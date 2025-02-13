@@ -15,45 +15,29 @@ function setEvents() {
   const searchInput = searchButton.previousElementSibling.firstElementChild;
   let initialRecipeList = [...recipes]; // Use a different name to avoid shadowing
   let uniqueIngredients = [];
+  let updatedUniqueIngredients = [];
   // let updatedRecipeList = [];
   const dropdownButton = document.getElementById(
     "ingredients-dropdown-button"
   ).firstElementChild;
 
-  uniqueIngredients = getInitialIngredientsList(initialRecipeList);
-  console.log(uniqueIngredients.length);
-
-  const dropdownContent = dropdownButton.nextElementSibling;
-
-  searchInput.addEventListener("focus", function () {
-    console.log("L'élément a reçu le focus !");
-    dropdownContent.classList.remove("show");
-  });
-
   searchInput.addEventListener("input", () => {
-    let { recipeList: updatedRecipeList } = mainSearch(initialRecipeList);
+    const { uniqueIngredients, recipeList: updatedRecipeList } =
+      mainSearch(initialRecipeList);
 
-    uniqueIngredients = updateIngredientsList(
+    updatedUniqueIngredients = updateIngredientsList(
       dropdownButton,
       updatedRecipeList
     );
   });
 
-  function handleDropdownClick() {
-    ingredientDropdownShow(uniqueIngredients);
-  }
+  uniqueIngredients = getInitialIngredientsList(initialRecipeList);
 
-  dropdownButton.addEventListener("click", handleDropdownClick);
+  // console.log(uniqueIngredients.length);
 
-  function resetDropdownEvent() {
-    dropdownButton.removeEventListener("click", handleDropdownClick);
-    dropdownButton.addEventListener("click", handleDropdownClick);
-  }
-  resetDropdownEvent();
-
-  // dropdownButton.addEventListener("click", () => {
-  //   console.log(uniqueIngredients.length);
-  // });
+  dropdownButton.addEventListener("click", () => {
+    ingredientDropdownShow(updatedUniqueIngredients);
+  });
 
   // result = filterByAppliances(recipeList);
 
@@ -81,10 +65,10 @@ function mainSearch(recipeList) {
     displayNoRecipes();
   }
   // filterByIngredients(recipeList);
-  // const uniqueIngredients = getInitialIngredientsList(recipeList);
+  const uniqueIngredients = getInitialIngredientsList(recipeList);
   // console.log(uniqueIngredients);
 
-  return { recipeList };
+  return { uniqueIngredients, recipeList };
   // ingredients = getIngredients(recipeList);
   // utensils = getUtensils(recipeList);
   // appliances = getAppliances(recipeList);
@@ -159,9 +143,9 @@ function getInitialIngredientsList(recipeList) {
     }
   }
   const uniqueIngredients = [...new Set(ingredientArray)];
+
   return uniqueIngredients;
 }
-
 function updateIngredientsList(dropdownButton, updatedRecipeList) {
   const updatedIngredientArray = [];
 
@@ -239,8 +223,11 @@ function filterList(dropdownSearchInput, index) {
     }
   }
 }
+let testIngredientDropdownShow = 0;
 
 function ingredientDropdownShow(uniqueElementNames) {
+  testIngredientDropdownShow++;
+  console.log("testIngredientDropdownShow " + testIngredientDropdownShow);
   let uniqueElementName;
   const dropdownItemTemplate = document.getElementById(
     "item-dropdown-template"
@@ -275,20 +262,17 @@ function ingredientDropdownShow(uniqueElementNames) {
     dropdownContent.classList.add("show");
   }
 
-  // dropdownButton.classList.toggle("border-radius-bottom");
-  // console.log(uniqueElementNames);
-  const dropdownItems =
-    dropdownIngredientsContent.querySelectorAll(".item-dropdown");
-  for (let j = 0; j < dropdownItems.length; j++) {
-    const dropdownItem = dropdownItems[j];
-    const dropdownItemText = dropdownItem.textContent;
-    console.log(dropdownItemText);
+  //   dropdownButton.classList.toggle("border-radius-bottom");
+  // const dropdownItems = dropdownIngredientsContent.querySelectorAll(".item-dropdown");
+  // for (let j = 0; j < dropdownItems.length; j++) {
+  //   const dropdownItem = dropdownItems[j];
+  //   dropdownItem.addEventListener("click", function (event) {
+  //     saveSelect(event);
+  //   });
+  // }
 
-    dropdownItem.addEventListener("click", function (event) {
-      saveSelect(event);
-      removefromIngredients();
-    });
-  }
+  // );
+  // }
 
   const dropdownSearchInputs = document.querySelectorAll(".dropdown-search");
 
@@ -311,13 +295,12 @@ function appliancesDropdownShow(uniqueElementNames) {
   const dropdownButton = document.getElementById(
     "appliances-dropdown-button"
   ).firstElementChild;
-  const dropdownContent = dropdownButton.nextElementSibling;
   let uniqueElementName;
   // console.log(dropdownButton);
   const dropdownItemTemplate = document.getElementById(
     "item-dropdown-template"
   );
-
+  const dropdownContent = dropdownButton.nextElementSibling;
   dropdownButton.addEventListener("click", () => {
     for (let j = 0; j < uniqueElementNames.length; j++) {
       uniqueElementName = uniqueElementNames[j];

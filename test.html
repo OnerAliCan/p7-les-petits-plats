@@ -3,52 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Exemple de Suppression</title>
-    <style>
-      .selected-item {
-        display: flex;
-        align-items: center;
-        margin: 5px 0;
-      }
-      .selected-item-clear-button {
-        cursor: pointer;
-        margin-left: 10px;
-      }
-    </style>
+    <title>Focus Event Example</title>
   </head>
   <body>
-    <div class="selected-item-container">
-      <template id="selected-item-template">
-        <div class="selected-item">
-          <span class="selected-item-text"></span>
-          <img class="selected-item-clear-button" src="assets/x.svg" alt="" />
-        </div>
-      </template>
-
-      <div class="selected-item">
-        <span class="selected-item-text">Saladier</span>
-        <img class="selected-item-clear-button" src="assets/x.svg" alt="" />
-      </div>
-    </div>
+    <input type="text" id="monInput" placeholder="Cliquez ici pour le focus" />
 
     <script>
-      // Sélectionner tous les boutons de suppression
-      const selectedItemClearButtons = document.querySelectorAll(
-        ".selected-item-clear-button"
-      );
+      // Sélectionner l'élément
+      const inputElement = document.getElementById("monInput");
 
-      // Ajouter un gestionnaire d'événements à chaque bouton de suppression
-      for (let i = 0; i < selectedItemClearButtons.length; i++) {
-        const selectedItemClearButton = selectedItemClearButtons[i];
-
-        selectedItemClearButton.addEventListener("click", function () {
-          // Récupérer l'élément parent (le div .selected-item)
-          const selectedItem = this.parentElement; // .selected-item
-          selectedItem.remove(); // Supprimer l'élément parent
-        });
-      }
+      // Ajouter un écouteur d'événements pour le focus
+      inputElement.addEventListener("focus", function () {
+        console.log("L'élément a reçu le focus !");
+      });
     </script>
   </body>
 </html>
-
-<a class="item-dropdown">Ail</a>
