@@ -13,7 +13,7 @@ function setEvents() {
   // MAIN SEARCH BAR EVENTS
   const searchButton = document.getElementById("header-search-button");
   const searchInput = searchButton.previousElementSibling.firstElementChild;
-  let initialRecipeList = [...recipes]; // Use a different name to avoid shadowing
+  let initialRecipeList = [...recipes];
   let uniqueIngredients = [];
   // let updatedRecipeList = [];
   const dropdownButton = document.getElementById(
@@ -21,12 +21,10 @@ function setEvents() {
   ).firstElementChild;
 
   uniqueIngredients = getInitialIngredientsList(initialRecipeList);
-  console.log(uniqueIngredients.length);
 
   const dropdownContent = dropdownButton.nextElementSibling;
 
   searchInput.addEventListener("focus", function () {
-    console.log("L'élément a reçu le focus !");
     dropdownContent.classList.remove("show");
   });
 
@@ -282,11 +280,15 @@ function ingredientDropdownShow(uniqueElementNames) {
   for (let j = 0; j < dropdownItems.length; j++) {
     const dropdownItem = dropdownItems[j];
     const dropdownItemText = dropdownItem.textContent;
-    console.log(dropdownItemText);
 
     dropdownItem.addEventListener("click", function (event) {
-      saveSelect(event);
-      removefromIngredients();
+      // dropdownIngredientsContent.removeChild(dropdownItemClone);
+
+      const selectedClick = event.target;
+      const selectedClickText = event.target.textContent;
+      createChips(selectedClickText);
+      ingredientChangeDiv(selectedClick);
+      // removefromIngredients();
     });
   }
 
@@ -305,6 +307,20 @@ function ingredientDropdownShow(uniqueElementNames) {
     const clearButton = clearButtons[i];
     clearButton.addEventListener("click", () => clearInput(i));
   }
+}
+
+function ingredientChangeDiv(selectedClick) {
+  // console.log(selectedClickText);
+  const selectedIngredients = document.getElementById("selected-ingredients");
+  const baseIngredientsList = document.getElementById(
+    "dropdown-ingredients-container"
+  );
+
+  // console.log(baseIngredientsList);
+  // baseIngredientsList.removeChild(selectedClick);
+  selectedIngredients.appendChild(selectedClick);
+  selectedClick.classList.remove("item-dropdown");
+  selectedClick.classList.add("selected-item");
 }
 
 function appliancesDropdownShow(uniqueElementNames) {
@@ -362,9 +378,7 @@ function appliancesDropdownShow(uniqueElementNames) {
   }
 }
 
-function saveSelect(event) {
-  const selectedClickText = event.target.innerText;
-
+function createChips(selectedClickText) {
   const selectedItemTemplate = document.getElementById(
     "selected-item-template"
   );

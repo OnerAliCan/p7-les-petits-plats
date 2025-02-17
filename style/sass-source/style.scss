@@ -237,6 +237,18 @@ header {
     }
   }
 
+  .dropdown-selected-elements {
+    background-color: #ffd15b;
+    box-sizing: border-box;
+    margin-left: -16px;
+    .selected-item {
+      padding-left: 16px;
+    }
+    & :hover {
+      font-weight: 700;
+    }
+  }
+
   a {
     font-family: Manrope;
     color: black;

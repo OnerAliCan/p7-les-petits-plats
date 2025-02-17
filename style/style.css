@@ -213,6 +213,17 @@ header {
   width: 14px;
   height: 14px;
 }
+.dropdown-content .dropdown-selected-elements {
+  background-color: #ffd15b;
+  box-sizing: border-box;
+  margin-left: -16px;
+}
+.dropdown-content .dropdown-selected-elements .selected-item {
+  padding-left: 16px;
+}
+.dropdown-content .dropdown-selected-elements :hover {
+  font-weight: 700;
+}
 .dropdown-content a {
   font-family: Manrope;
   color: black;

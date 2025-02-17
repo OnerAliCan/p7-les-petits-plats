@@ -3,18 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Focus Event Example</title>
+    <title>Déplacer un élément</title>
+    <style>
+      .container {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px;
+      }
+    </style>
   </head>
   <body>
-    <input type="text" id="monInput" placeholder="Cliquez ici pour le focus" />
+    <div id="source" class="container">
+      <p id="element">Cliquez sur moi pour me déplacer</p>
+    </div>
+
+    <div id="destination" class="container">
+      <p>Ici, je vais être déplacé</p>
+    </div>
 
     <script>
-      // Sélectionner l'élément
-      const inputElement = document.getElementById("monInput");
+      // Sélectionner l'élément à déplacer
+      const element = document.getElementById("element");
 
-      // Ajouter un écouteur d'événements pour le focus
-      inputElement.addEventListener("focus", function () {
-        console.log("L'élément a reçu le focus !");
+      // Ajouter un événement de clic
+      element.addEventListener("click", function () {
+        // Sélectionner la div de destination
+        const destination = document.getElementById("destination");
+
+        // Déplacer l'élément dans la div de destination
+        destination.appendChild(element);
       });
     </script>
   </body>
