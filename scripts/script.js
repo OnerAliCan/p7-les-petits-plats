@@ -5,22 +5,20 @@ window.addEventListener("load", () => {
   displayRecipes(recipeList);
 });
 
-let appliances = [];
-let utensils = [];
-let ingredients = [];
+// let appliances = [];
+// let utensils = [];
+// let ingredients = [];
 
 function setEvents() {
-  // MAIN SEARCH BAR EVENTS
   const searchButton = document.getElementById("header-search-button");
   const searchInput = searchButton.previousElementSibling.firstElementChild;
-  let initialRecipeList = [...recipes];
+  let recipeList = [...recipes];
   let uniqueIngredients = [];
-  // let updatedRecipeList = [];
   const dropdownButton = document.getElementById(
     "ingredients-dropdown-button"
   ).firstElementChild;
 
-  uniqueIngredients = getInitialIngredientsList(initialRecipeList);
+  uniqueIngredients = getInitialIngredientsList(recipeList);
 
   const dropdownContent = dropdownButton.nextElementSibling;
 
@@ -29,93 +27,58 @@ function setEvents() {
   });
 
   searchInput.addEventListener("input", () => {
-    let { recipeList: updatedRecipeList } = mainSearch(initialRecipeList);
-
-    uniqueIngredients = updateIngredientsList(
-      dropdownButton,
-      updatedRecipeList
-    );
+    recipeList = [...recipes];
+    recipeList = mainSearch(recipeList);
+    uniqueIngredients = updateIngredientsList(recipeList);
+    resetDropdownEvent();
   });
+  let selectedIngredients = [];
 
   function handleDropdownClick() {
-    ingredientDropdownShow(uniqueIngredients);
+    ingredientDropdownFill(recipeList, selectedIngredients, uniqueIngredients);
+    ingredientDropdownToggle(dropdownContent);
   }
 
-  dropdownButton.addEventListener("click", handleDropdownClick);
+  // dropdownButton.addEventListener("click", handleDropdownClick);
 
   function resetDropdownEvent() {
     dropdownButton.removeEventListener("click", handleDropdownClick);
     dropdownButton.addEventListener("click", handleDropdownClick);
   }
+
   resetDropdownEvent();
-
-  // dropdownButton.addEventListener("click", () => {
-  //   console.log(uniqueIngredients.length);
-  // });
-
-  // result = filterByAppliances(recipeList);
-
-  // searchInput.addEventListener("input", function (event) {
-  // if (event.key === "Enter") {
-  //   for (let i = 0; i < recipes.length; i++) {
-  //     if (recipes[i] === searchInput.value) {
-  //       console.log(recipes[i]);
-  //     }
-  //   }
-  // }
-  //   console.log("hello");
-  // });
 }
 
-function mainSearch(recipeList) {
+function mainSearch(recipeList, selectedClickText) {
   const searchButton = document.getElementById("header-search-button");
   const searchInput = searchButton.previousElementSibling.firstElementChild;
   const r = [];
 
-  recipeList = filterBySearch(r, recipeList, searchInput);
-  if (r.length !== 0) {
-    displayRecipes(r);
+  if (searchInput.value) {
+    recipeList = filterBySearch(r, recipeList, searchInput);
+  }
+
+  // recipeList = filterByIngredients(
+  //   r,
+  //   selectedIngredients,
+  //   recipeList,
+  //   selectedClickText
+  // );
+
+  if (recipeList.length !== 0) {
+    displayRecipes(recipeList);
   } else {
     displayNoRecipes();
   }
-  // filterByIngredients(recipeList);
-  // const uniqueIngredients = getInitialIngredientsList(recipeList);
-  // console.log(uniqueIngredients);
 
-  return { recipeList };
-  // ingredients = getIngredients(recipeList);
-  // utensils = getUtensils(recipeList);
-  // appliances = getAppliances(recipeList);
-
-  // let applianceCount = 0;
-  // let utensilCount = 0;
-  // let ingredientCount = 0;
-
-  // for (let i = 0; i < recipes.length; i++) {
-  //   const recipe = recipes[i];
-
-  //   appliances[applianceCount] = recipe.appliance;
-  //   applianceCount++;
-
-  //   for (let j = 0; j < recipe.ustensils.length; j++) {
-  //     utensils[utensilCount] = recipe.ustensils[j];
-  //     utensilCount++;
-  //   }
-
-  //   for (let k = 0; k < recipe.ingredients.length; k++) {
-  //     ingredients[ingredientCount] = recipe.ingredients[k].ingredient;
-  //     ingredientCount++;
-  //   }
-  // }
+  return recipeList;
 }
-
 function filterBySearch(r, recipeList, searchInput) {
   const searchValue = searchInput.value.toLowerCase();
   const searchValueArray = [];
   searchValueArray.shift();
   searchValueArray.push(searchValue);
   const searchValueArrayFirstValue = searchValueArray[0];
-  console.log(searchValueArrayFirstValue);
   for (let i = 0; i < recipeList.length; i++) {
     const recipe = recipeList[i];
     let ingredientName;
@@ -160,11 +123,11 @@ function getInitialIngredientsList(recipeList) {
   return uniqueIngredients;
 }
 
-function updateIngredientsList(dropdownButton, updatedRecipeList) {
+function updateIngredientsList(recipeList) {
   const updatedIngredientArray = [];
 
-  for (let i = 0; i < updatedRecipeList.length; i++) {
-    const updatedRecipe = updatedRecipeList[i];
+  for (let i = 0; i < recipeList.length; i++) {
+    const updatedRecipe = recipeList[i];
     for (let j = 0; j < updatedRecipe.ingredients.length; j++) {
       updatedIngredientArray.push(updatedRecipe.ingredients[j].ingredient);
     }
@@ -174,54 +137,22 @@ function updateIngredientsList(dropdownButton, updatedRecipeList) {
   return updatedUniqueIngredients;
 }
 
-// function filterByIngredients(recipeList) {
-//   let totalIngredientNames = [];
+function filterByIngredients(
+  r,
+  selectedIngredients,
+  recipeList,
+  selectedClickText
+) {
+  selectedIngredients.push(selectedClickText);
 
-//   for (let i = 0; i < recipeList.length; i++) {
-//     const recipe = recipeList[i];
-//     const recipeIngredients = recipe.ingredients;
-
-//     // console.log(recipeIngredients);
-
-//     let ingredientNames = new Array(recipeIngredients.length);
-//     for (let k = 0; k < recipeIngredients.length; k++) {
-//       ingredientNames[k] = recipeIngredients[k].ingredient;
-//     }
-//     totalIngredientNames[i] = ingredientNames;
-//   }
-
-//   let flattenedIngredientNames = [];
-//   for (let l = 0; l < totalIngredientNames.length; l++) {
-//     const currentArray = totalIngredientNames[l];
-
-//     for (let m = 0; m < currentArray.length; m++) {
-//       flattenedIngredientNames[flattenedIngredientNames.length] =
-//         currentArray[m];
-//     }
-//   }
-//   const uniqueIngredientNames = [...new Set(flattenedIngredientNames)];
-//   return { recipeList, uniqueIngredientNames };
-// }
-
-// function filterByAppliances(recipeList) {
-//   let totalApplianceNames = [];
-
-//   for (let i = 0; i < recipeList.length; i++) {
-//     const recipe = recipeList[i];
-//     const recipeAppliances = recipe.appliance;
-
-//     // for (let j = 0; j < recipeAppliances.length; j++) {
-//     //   console.log(recipeAppliances[j]);
-//     totalApplianceNames.push(recipeAppliances);
-//     // }
-//     // console.log(totalApplianceNames);
-//   }
-
-//   const uniqueApplianceNames = [...new Set(totalApplianceNames)];
-//   // console.log(uniqueApplianceNames);
-//   appliancesDropdownShow(uniqueApplianceNames);
-//   return recipeList;
-// }
+  r = recipeList.filter(recipe =>
+    selectedIngredients.every(selected =>
+      recipe.ingredients.some(ingredient => ingredient.ingredient === selected)
+    )
+  );
+  console.log(r);
+  return r;
+}
 
 function filterList(dropdownSearchInput, index) {
   const filter = dropdownSearchInput.value.toUpperCase();
@@ -238,7 +169,15 @@ function filterList(dropdownSearchInput, index) {
   }
 }
 
-function ingredientDropdownShow(uniqueElementNames) {
+function ingredientDropdownFill(
+  recipeList,
+  selectedIngredients,
+  uniqueIngredients
+) {
+  const filteredUniqueElementNames = uniqueIngredients.filter(
+    ingredient => !selectedIngredients.includes(ingredient)
+  );
+
   let uniqueElementName;
   const dropdownItemTemplate = document.getElementById(
     "item-dropdown-template"
@@ -247,135 +186,74 @@ function ingredientDropdownShow(uniqueElementNames) {
     "dropdown-ingredients-container"
   );
 
-  const dropdownContent = document.getElementById(
-    "dropdown-ingredients-content"
-  );
-
   let dropdownItemClone;
   dropdownIngredientsContent.innerHTML = "";
 
-  for (let j = 0; j < uniqueElementNames.length; j++) {
-    uniqueElementName = uniqueElementNames[j];
+  for (let j = 0; j < filteredUniqueElementNames.length; j++) {
+    uniqueElementName = filteredUniqueElementNames[j];
     dropdownItemClone = document.importNode(
       dropdownItemTemplate.content,
       true
     ).firstElementChild;
-    dropdownItemClone.innerText = "";
-
     dropdownItemClone.innerText = uniqueElementName;
 
     dropdownIngredientsContent.appendChild(dropdownItemClone);
   }
 
+  const dropdownItems =
+    dropdownIngredientsContent.querySelectorAll(".item-dropdown");
+  for (let j = 0; j < dropdownItems.length; j++) {
+    const dropdownItem = dropdownItems[j];
+    dropdownItem.addEventListener("click", function (event) {
+      const selectedClickText = event.target.textContent;
+      createChips(selectedClickText);
+      selectedIngredients.push(selectedClickText);
+
+      recipeList = mainSearch(recipeList, selectedClickText);
+      ingredientChangeDiv(dropdownItem);
+      ingredientDropdownFill(
+        recipeList,
+        selectedIngredients,
+        uniqueIngredients
+      );
+    });
+  }
+
+  const dropdownSearchInputs = document.querySelectorAll(".dropdown-search");
+
+  for (let i = 0; i < dropdownSearchInputs.length; i++) {
+    const dropdownSearchInput = dropdownSearchInputs[i];
+    dropdownSearchInput.addEventListener("input", () => {
+      filterList(dropdownSearchInput, i);
+    });
+  }
+
+  const clearButtons = document.querySelectorAll(".clear-button");
+
+  for (let i = 0; i < clearButtons.length; i++) {
+    const clearButton = clearButtons[i];
+    clearButton.addEventListener("click", () => clearInput(i));
+  }
+  return selectedIngredients;
+}
+
+function ingredientDropdownToggle(dropdownContent) {
   if (dropdownContent.classList.contains("show")) {
     dropdownContent.classList.remove("show");
   } else {
     dropdownContent.classList.add("show");
   }
-
-  // dropdownButton.classList.toggle("border-radius-bottom");
-  // console.log(uniqueElementNames);
-  const dropdownItems =
-    dropdownIngredientsContent.querySelectorAll(".item-dropdown");
-  for (let j = 0; j < dropdownItems.length; j++) {
-    const dropdownItem = dropdownItems[j];
-    const dropdownItemText = dropdownItem.textContent;
-
-    dropdownItem.addEventListener("click", function (event) {
-      // dropdownIngredientsContent.removeChild(dropdownItemClone);
-
-      const selectedClick = event.target;
-      const selectedClickText = event.target.textContent;
-      createChips(selectedClickText);
-      ingredientChangeDiv(selectedClick);
-      // removefromIngredients();
-    });
-  }
-
-  const dropdownSearchInputs = document.querySelectorAll(".dropdown-search");
-
-  for (let i = 0; i < dropdownSearchInputs.length; i++) {
-    const dropdownSearchInput = dropdownSearchInputs[i];
-    dropdownSearchInput.addEventListener("input", () => {
-      filterList(dropdownSearchInput, i);
-    });
-  }
-
-  const clearButtons = document.querySelectorAll(".clear-button");
-
-  for (let i = 0; i < clearButtons.length; i++) {
-    const clearButton = clearButtons[i];
-    clearButton.addEventListener("click", () => clearInput(i));
-  }
 }
 
 function ingredientChangeDiv(selectedClick) {
-  // console.log(selectedClickText);
   const selectedIngredients = document.getElementById("selected-ingredients");
   const baseIngredientsList = document.getElementById(
     "dropdown-ingredients-container"
   );
+  selectedClick.classList.replace("item-dropdown", "selected-ingredient");
 
-  // console.log(baseIngredientsList);
-  // baseIngredientsList.removeChild(selectedClick);
+  baseIngredientsList.removeChild;
   selectedIngredients.appendChild(selectedClick);
-  selectedClick.classList.remove("item-dropdown");
-  selectedClick.classList.add("selected-item");
-}
-
-function appliancesDropdownShow(uniqueElementNames) {
-  const dropdownButton = document.getElementById(
-    "appliances-dropdown-button"
-  ).firstElementChild;
-  const dropdownContent = dropdownButton.nextElementSibling;
-  let uniqueElementName;
-  // console.log(dropdownButton);
-  const dropdownItemTemplate = document.getElementById(
-    "item-dropdown-template"
-  );
-
-  dropdownButton.addEventListener("click", () => {
-    for (let j = 0; j < uniqueElementNames.length; j++) {
-      uniqueElementName = uniqueElementNames[j];
-      const dropdownItemClone = document.importNode(
-        dropdownItemTemplate.content,
-        true
-      );
-      dropdownItemClone.firstElementChild.innerText = uniqueElementName;
-      dropdownContent.appendChild(dropdownItemClone);
-    }
-    // console.log(dropdownContent);
-
-    dropdownContent.classList.toggle("show");
-  });
-
-  //   dropdownButton.classList.toggle("border-radius-bottom");
-  // const dropdownItems = dropdownContent.querySelectorAll(".item-dropdown");
-  // for (let j = 0; j < dropdownItems.length; j++) {
-  //   const dropdownItem = dropdownItems[j];
-  //   dropdownItem.addEventListener("click", function (event) {
-  //     saveSelect(event);
-  //   });
-  // }
-
-  // );
-  // }
-
-  const dropdownSearchInputs = document.querySelectorAll(".dropdown-search");
-
-  for (let i = 0; i < dropdownSearchInputs.length; i++) {
-    const dropdownSearchInput = dropdownSearchInputs[i];
-    dropdownSearchInput.addEventListener("input", () => {
-      filterList(dropdownSearchInput, i);
-    });
-  }
-
-  const clearButtons = document.querySelectorAll(".clear-button");
-
-  for (let i = 0; i < clearButtons.length; i++) {
-    const clearButton = clearButtons[i];
-    clearButton.addEventListener("click", () => clearInput(i));
-  }
 }
 
 function createChips(selectedClickText) {
@@ -417,8 +295,6 @@ function displayRecipes(recipeList) {
   const recipeListLengthDisplay = document.querySelector(".recipe-length");
 
   recipeListLengthDisplay.innerText = recipeList.length;
-
-  // console.log(recipeListLengthDisplay);
 
   const recipeTemplate = document.getElementById("recipe-card-template");
   const recipeSection = document.querySelector(".recipe-section");
@@ -477,5 +353,5 @@ function displayNoRecipes() {
   recipeListLengthDisplay.innerText = "0";
   const recipeSection = document.querySelector(".recipe-section");
   recipeSection.innerHTML = "";
-  // console.log("rieng");
+  console.log("rieng");
 }
