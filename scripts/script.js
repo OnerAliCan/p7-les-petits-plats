@@ -1,24 +1,22 @@
 window.addEventListener("load", () => {
   let recipeList = [...recipes];
-
   setEvents();
   displayRecipes(recipeList);
 });
 
 // let appliances = [];
 // let utensils = [];
-// let ingredients = [];
+let uniqueIngredients = [];
 
 function setEvents() {
   const searchButton = document.getElementById("header-search-button");
   const searchInput = searchButton.previousElementSibling.firstElementChild;
   let recipeList = [...recipes];
-  let uniqueIngredients = [];
   const dropdownButton = document.getElementById(
     "ingredients-dropdown-button"
   ).firstElementChild;
 
-  uniqueIngredients = getInitialIngredientsList(recipeList);
+  uniqueIngredients = getInitialIngredientsList();
 
   const dropdownContent = dropdownButton.nextElementSibling;
 
@@ -27,19 +25,16 @@ function setEvents() {
   });
 
   searchInput.addEventListener("input", () => {
-    recipeList = [...recipes];
     recipeList = mainSearch(recipeList);
+
     uniqueIngredients = updateIngredientsList(recipeList);
     resetDropdownEvent();
   });
-  let selectedIngredients = [];
 
   function handleDropdownClick() {
-    ingredientDropdownFill(recipeList, selectedIngredients, uniqueIngredients);
+    ingredientDropdownFill(uniqueIngredients);
     ingredientDropdownToggle(dropdownContent);
   }
-
-  // dropdownButton.addEventListener("click", handleDropdownClick);
 
   function resetDropdownEvent() {
     dropdownButton.removeEventListener("click", handleDropdownClick);
@@ -49,46 +44,39 @@ function setEvents() {
   resetDropdownEvent();
 }
 
-function mainSearch(recipeList, selectedClickText) {
+function mainSearch(recipeList) {
+  recipeList = [...recipes];
   const searchButton = document.getElementById("header-search-button");
   const searchInput = searchButton.previousElementSibling.firstElementChild;
-  const r = [];
 
-  if (searchInput.value) {
-    recipeList = filterBySearch(r, recipeList, searchInput);
+  if (searchInput.value.length > 2) {
+    recipeList = filterBySearch(recipeList, searchInput);
   }
 
-  // recipeList = filterByIngredients(
-  //   r,
-  //   selectedIngredients,
-  //   recipeList,
-  //   selectedClickText
-  // );
+  recipeList = filterByIngredients(recipeList);
 
   if (recipeList.length !== 0) {
     displayRecipes(recipeList);
   } else {
     displayNoRecipes();
   }
-
   return recipeList;
 }
-function filterBySearch(r, recipeList, searchInput) {
+function filterBySearch(recipeList, searchInput) {
+  const r = [];
   const searchValue = searchInput.value.toLowerCase();
-  const searchValueArray = [];
-  searchValueArray.shift();
-  searchValueArray.push(searchValue);
-  const searchValueArrayFirstValue = searchValueArray[0];
+  // const searchValueArray = [];
+  // searchValueArray.shift();
+  // searchValueArray.push(searchValue);
+  // const searchValueArrayFirstValue = searchValueArray[0];
+
   for (let i = 0; i < recipeList.length; i++) {
     const recipe = recipeList[i];
     let ingredientName;
-    let ingredientFound = false;
 
     if (
-      recipeList[i].name.toLowerCase().includes(searchValueArrayFirstValue) ||
-      recipeList[i].description
-        .toLowerCase()
-        .includes(searchValueArrayFirstValue)
+      recipe.name.toLowerCase().includes(searchValue) ||
+      recipe.description.toLowerCase().includes(searchValue)
     ) {
       r.push(recipe);
       continue;
@@ -97,20 +85,16 @@ function filterBySearch(r, recipeList, searchInput) {
     for (let j = 0; j < recipe.ingredients.length; j++) {
       ingredientName = recipe.ingredients[j].ingredient;
 
-      if (ingredientName.toLowerCase().includes(searchValueArrayFirstValue)) {
-        ingredientFound = true;
+      if (ingredientName.toLowerCase().includes(searchValue)) {
+        r.push(recipe);
         break;
       }
-    }
-
-    if (ingredientFound) {
-      r.push(recipe);
     }
   }
   return r;
 }
-
-function getInitialIngredientsList(recipeList) {
+function getInitialIngredientsList() {
+  let recipeList = [...recipes];
   const ingredientArray = [];
 
   for (let i = 0; i < recipeList.length; i++) {
@@ -119,11 +103,11 @@ function getInitialIngredientsList(recipeList) {
       ingredientArray.push(recipe.ingredients[j].ingredient);
     }
   }
-  const uniqueIngredients = [...new Set(ingredientArray)];
-  return uniqueIngredients;
+  return [...new Set(ingredientArray)];
 }
 
-function updateIngredientsList(recipeList) {
+function updateIngredientsList() {
+  let recipeList = [...recipes];
   const updatedIngredientArray = [];
 
   for (let i = 0; i < recipeList.length; i++) {
@@ -137,20 +121,26 @@ function updateIngredientsList(recipeList) {
   return updatedUniqueIngredients;
 }
 
-function filterByIngredients(
-  r,
-  selectedIngredients,
-  recipeList,
-  selectedClickText
-) {
-  selectedIngredients.push(selectedClickText);
+function filterByIngredients(recipeList) {
+  let r = [];
+  const children = document.getElementById("selected-ingredients").children;
+  const selectedIngredientsList = [];
+  for (let i = 0; i < children.length; i++) {
+    selectedIngredientsList.push(children[i].textContent.toLowerCase());
+  }
 
-  r = recipeList.filter(recipe =>
-    selectedIngredients.every(selected =>
-      recipe.ingredients.some(ingredient => ingredient.ingredient === selected)
-    )
-  );
-  console.log(r);
+  for (let i = 0; i < recipeList.length; i++) {
+    const recipe = recipeList[i];
+
+    for (let j = 0; j < recipe.ingredients.length; j++) {
+      const ingredientName = recipe.ingredients[j].ingredient.toLowerCase();
+
+      if (selectedIngredientsList.includes(ingredientName)) {
+        r.push(recipe);
+        break;
+      }
+    }
+  }
   return r;
 }
 
@@ -169,11 +159,13 @@ function filterList(dropdownSearchInput, index) {
   }
 }
 
-function ingredientDropdownFill(
-  recipeList,
-  selectedIngredients,
-  uniqueIngredients
-) {
+function ingredientDropdownFill(uniqueIngredients) {
+  const children = document.getElementById("selected-ingredients").children;
+  const selectedIngredients = [];
+  for (let i = 0; i < children.length; i++) {
+    selectedIngredients.push(children[i].textContent);
+  }
+
   const filteredUniqueElementNames = uniqueIngredients.filter(
     ingredient => !selectedIngredients.includes(ingredient)
   );
@@ -208,14 +200,9 @@ function ingredientDropdownFill(
       const selectedClickText = event.target.textContent;
       createChips(selectedClickText);
       selectedIngredients.push(selectedClickText);
-
-      recipeList = mainSearch(recipeList, selectedClickText);
-      ingredientChangeDiv(dropdownItem);
-      ingredientDropdownFill(
-        recipeList,
-        selectedIngredients,
-        uniqueIngredients
-      );
+      ingredientChangeDiv(selectedClickText);
+      mainSearch();
+      ingredientDropdownFill(uniqueIngredients);
     });
   }
 
@@ -246,14 +233,13 @@ function ingredientDropdownToggle(dropdownContent) {
 }
 
 function ingredientChangeDiv(selectedClick) {
-  const selectedIngredients = document.getElementById("selected-ingredients");
-  const baseIngredientsList = document.getElementById(
-    "dropdown-ingredients-container"
+  const selectedIngredientsDiv = document.getElementById(
+    "selected-ingredients"
   );
+
   selectedClick.classList.replace("item-dropdown", "selected-ingredient");
 
-  baseIngredientsList.removeChild;
-  selectedIngredients.appendChild(selectedClick);
+  selectedIngredientsDiv.appendChild(selectedClick);
 }
 
 function createChips(selectedClickText) {
