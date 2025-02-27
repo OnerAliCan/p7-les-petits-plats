@@ -3,36 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Déplacer un élément</title>
+    <title>Suppression d'Ingrédients</title>
     <style>
-      .container {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin: 10px;
+      .item-dropdown {
+        cursor: pointer; /* Change le curseur pour indiquer que c'est cliquable */
+        display: block; /* Affiche chaque élément sur une nouvelle ligne */
+        margin: 5px 0; /* Ajoute un peu d'espace entre les éléments */
+        padding: 10px; /* Ajoute du rembourrage pour un meilleur aspect */
+        background-color: #f0f0f0; /* Couleur de fond */
+        border: 1px solid #ccc; /* Bordure */
       }
     </style>
   </head>
   <body>
-    <div id="source" class="container">
-      <p id="element">Cliquez sur moi pour me déplacer</p>
-    </div>
-
-    <div id="destination" class="container">
-      <p>Ici, je vais être déplacé</p>
+    <div id="ingredient-list">
+      <a class="item-dropdown">Lait de coco</a>
+      <a class="item-dropdown">Sucre</a>
+      <a class="item-dropdown">Farine</a>
     </div>
 
     <script>
-      // Sélectionner l'élément à déplacer
-      const element = document.getElementById("element");
+      // Sélectionner tous les éléments dropdown
+      const dropdownItems = document.querySelectorAll(".item-dropdown");
 
-      // Ajouter un événement de clic
-      element.addEventListener("click", function () {
-        // Sélectionner la div de destination
-        const destination = document.getElementById("destination");
-
-        // Déplacer l'élément dans la div de destination
-        destination.appendChild(element);
+      // Ajouter un gestionnaire d'événements à chaque élément
+      dropdownItems.forEach(dropdownItem => {
+        dropdownItem.addEventListener("click", function () {
+          ingredientChangeDiv(this); // Passer l'élément cliqué à la fonction
+        });
       });
+
+      function ingredientChangeDiv(selectedClick) {
+        console.log("Élément avant suppression:", selectedClick); // Affiche l'élément avant la suppression
+        selectedClick.remove(); // Supprime l'élément du DOM
+        console.log("Élément supprimé:", selectedClick); // Affiche l'élément supprimé
+      }
     </script>
   </body>
 </html>
