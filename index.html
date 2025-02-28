@@ -55,6 +55,7 @@
       <div class="dropdown-section">
         <div class="dropdowns-and-recipe-number-container">
           <div class="dropdown-buttons-container">
+            <!-- ingredients dropdown -->
             <div class="dropdown" id="ingredients-dropdown-button">
               <button class="dropbtn dropdown-button">Ingrédients</button>
               <div class="dropdown-content" id="dropdown-ingredients-content">
@@ -74,18 +75,24 @@
                 <div id="dropdown-ingredients-container"></div>
               </div>
             </div>
-
+            <!-- appliances dropdown -->
             <div class="dropdown" id="appliances-dropdown-button">
               <button class="dropbtn dropdown-button">Appareils</button>
-              <div class="dropdown-content">
+              <div class="dropdown-content" id="dropdown-appliances-content">
                 <div class="input-wrapper">
-                  <input
-                    type="text"
-                    placeholder="Search.."
-                    class="dropdown-search"
-                  />
+                  <input type="text" placeholder="" class="dropdown-search" />
                   <img class="clear-button" src="assets/x.svg" alt="" />
+                  <img
+                    class="dropdown-search-glass"
+                    src="assets/search-glass-black.svg"
+                    alt=""
+                  />
                 </div>
+                <div
+                  class="dropdown-selected-elements"
+                  id="selected-appliances"
+                ></div>
+                <div id="dropdown-appliances-container"></div>
               </div>
             </div>
 
@@ -179,6 +186,6 @@
       <div class="recipe-section"></div>
     </main>
     <script src="scripts/recipes.js"></script>
-    <script src="scripts/script.js"></script>
+    <script src="test.js"></script>
   </body>
 </html>
