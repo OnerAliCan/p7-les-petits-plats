@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
 });
 
 let appliances = [];
-// let utensils = [];
+let utensils = [];
 let uniqueIngredients = [];
 
 function setEvents() {
@@ -19,6 +19,10 @@ function setEvents() {
 
   const appliancesDropdownButton = document.getElementById(
     "appliances-dropdown-button"
+  ).firstElementChild;
+
+  const utensilsDropdownButton = document.getElementById(
+    "utensils-dropdown-button"
   ).firstElementChild;
 
   const dropdownButtons = document.getElementsByClassName("dropdown-button");
@@ -42,12 +46,15 @@ function setEvents() {
 
   appliances = getInitialAppliancesList();
 
+  utensils = getInitialUtensilsList();
+
   // close dropdown at main bar input
 
   const ingredientsDropdownContent =
     ingredientsDropdownButton.nextElementSibling;
 
   const appliancesDropdownContent = appliancesDropdownButton.nextElementSibling;
+  const utensilsDropdownContent = utensilsDropdownButton.nextElementSibling;
 
   searchInput.addEventListener("focus", function () {
     ingredientsDropdownContent.classList.remove("show");
@@ -57,12 +64,17 @@ function setEvents() {
     appliancesDropdownContent.classList.remove("show");
   });
 
+  searchInput.addEventListener("focus", function () {
+    utensilsDropdownContent.classList.remove("show");
+  });
+
   // main bar input search and dropdown click reset call
 
   searchInput.addEventListener("input", () => {
     recipeList = mainSearch();
     resetIngredientsDropdownEvent();
     resetAppliancesDropdownEvent();
+    resetUtensilsDropdownEvent();
   });
 
   // dropdown click handlers
@@ -76,6 +88,12 @@ function setEvents() {
     appliancesDropdownFill(appliances);
     appliancesDropdownToggle(appliancesDropdownContent);
   }
+
+  function handleUtensilsDropdownClick() {
+    utensilsDropdownFill(utensils);
+    utensilsDropdownToggle(utensilsDropdownContent);
+  }
+
   // dropdown events reset
   function resetIngredientsDropdownEvent() {
     ingredientsDropdownButton.removeEventListener(
@@ -100,6 +118,18 @@ function setEvents() {
     );
   }
   resetAppliancesDropdownEvent();
+
+  function resetUtensilsDropdownEvent() {
+    utensilsDropdownButton.removeEventListener(
+      "click",
+      handleUtensilsDropdownClick
+    );
+    utensilsDropdownButton.addEventListener(
+      "click",
+      handleUtensilsDropdownClick
+    );
+  }
+  resetUtensilsDropdownEvent();
 }
 
 function mainSearch() {
@@ -130,6 +160,14 @@ function mainSearch() {
     recipeList = filterByAppliances(recipeList);
   }
 
+  // utensils filter call
+  const selectedUtensilsChildren =
+    document.getElementById("selected-utensils").children;
+
+  if (selectedUtensilsChildren.length > 0) {
+    recipeList = filterByUtensils(recipeList);
+  }
+
   // recipe display & displayed number change
 
   if (recipeList.length !== 0) {
@@ -141,6 +179,8 @@ function mainSearch() {
   // update dropdown lists
   uniqueIngredients = updateIngredientsList(recipeList);
   appliances = updateAppliancesList(recipeList);
+
+  utensils = updateUtensilsList(recipeList);
 
   return recipeList;
 }
@@ -201,6 +241,24 @@ function getInitialAppliancesList() {
   return [...new Set(appliancesArray)];
 }
 
+function getInitialUtensilsList() {
+  let recipeList = [...recipes];
+  const utensilsArray = [];
+
+  for (let i = 0; i < recipeList.length; i++) {
+    const utensilList = recipeList[i].ustensils;
+    for (let j = 0; j < utensilList.length; j++) {
+      let utensil = utensilList[j];
+      utensil = utensil.toLowerCase();
+      utensil =
+        utensil.charAt(0).toUpperCase() + utensil.slice(1).toLowerCase();
+      utensilsArray.push(utensil);
+    }
+  }
+  const uniqueUtensilsArray = [...new Set(utensilsArray)];
+  return uniqueUtensilsArray;
+}
+
 function updateIngredientsList(recipeList) {
   let updatedIngredientArray = [];
 
@@ -222,17 +280,30 @@ function updateAppliancesList(recipeList) {
 
   for (let i = 0; i < recipeList.length; i++) {
     const updatedRecipe = recipeList[i];
-    // console.log(updatedRecipe[i]);
     updatedApplianceArray.push(updatedRecipe.appliance);
-
-    // for (let j = 0; j < updatedRecipe.appliances.length; j++) {
-    //   updatedApplianceArray.push(updatedRecipe.appliances[j].appliance);
-    // }
   }
 
   const updatedUniqueAppliances = [...new Set(updatedApplianceArray)];
 
   return updatedUniqueAppliances;
+}
+
+function updateUtensilsList(recipeList) {
+  let updatedUtensilArray = [];
+
+  for (let i = 0; i < recipeList.length; i++) {
+    const updatedRecipe = recipeList[i];
+    for (let j = 0; j < updatedRecipe.ustensils.length; j++) {
+      updatedRecipe.ustensils[j] =
+        updatedRecipe.ustensils[j].charAt(0).toUpperCase() +
+        updatedRecipe.ustensils[j].slice(1).toLowerCase();
+      updatedUtensilArray.push(updatedRecipe.ustensils[j]);
+    }
+  }
+
+  const updatedUniqueUtensils = [...new Set(updatedUtensilArray)];
+
+  return updatedUniqueUtensils;
 }
 
 function filterByIngredients(recipeList) {
@@ -284,6 +355,55 @@ function filterByAppliances(recipeList) {
       r.push(recipe);
     }
   }
+  return r;
+}
+
+// function filterByUtensils(recipeList) {
+//   let r = [];
+//   const children = document.getElementById("selected-utensils").children;
+
+//   const selectedUtensilsList = [];
+//   for (let i = 0; i < children.length; i++) {
+//     selectedUtensilsList.push(children[i].textContent.toLowerCase());
+//   }
+
+//   for (let i = 0; i < recipeList.length; i++) {
+//     const recipe = recipeList[i];
+
+//     const allUtensilsIncluded = selectedUtensilsList.every(selectedUtensil => {
+//       return recipe.utensil.toLowerCase() === selectedUtensil;
+//     });
+
+//     if (allUtensilsIncluded) {
+//       r.push(recipe);
+//     }
+//   }
+//   return r;
+// }
+
+function filterByUtensils(recipeList) {
+  let r = [];
+  const children = document.getElementById("selected-utensils").children;
+
+  const selectedUtensilsList = [];
+  for (let i = 0; i < children.length; i++) {
+    selectedUtensilsList.push(children[i].textContent.toLowerCase());
+  }
+
+  for (let i = 0; i < recipeList.length; i++) {
+    const recipe = recipeList[i];
+
+    const allUtensilsIncluded = selectedUtensilsList.every(selectedUtensil => {
+      return recipe.ustensils.some(utensil => {
+        return utensil.toLowerCase() === selectedUtensil;
+      });
+    });
+
+    if (allUtensilsIncluded) {
+      r.push(recipe);
+    }
+  }
+
   return r;
 }
 
@@ -423,6 +543,70 @@ function appliancesDropdownFill(appliances) {
   return selectedAppliances;
 }
 
+function utensilsDropdownFill(utensils) {
+  const children = document.getElementById("selected-utensils").children;
+  const selectedUtensils = [];
+
+  for (let i = 0; i < children.length; i++) {
+    selectedUtensils.push(children[i].textContent);
+  }
+
+  const filteredUniqueElementNames = utensils.filter(
+    utensil => !selectedUtensils.includes(utensil)
+  );
+
+  let uniqueElementName;
+  const utensilsDropdownItemTemplate = document.getElementById(
+    "item-dropdown-template"
+  );
+  const utensilsDropdownContent = document.getElementById(
+    "dropdown-utensils-container"
+  );
+
+  let utensilsDropdownItemClone;
+
+  utensilsDropdownContent.innerHTML = "";
+
+  for (let j = 0; j < filteredUniqueElementNames.length; j++) {
+    uniqueElementName = filteredUniqueElementNames[j];
+    utensilsDropdownItemClone = document.importNode(
+      utensilsDropdownItemTemplate.content,
+      true
+    ).firstElementChild;
+    utensilsDropdownItemClone.innerText = uniqueElementName;
+
+    utensilsDropdownContent.appendChild(utensilsDropdownItemClone);
+  }
+
+  const utensilsDropdownItems =
+    utensilsDropdownContent.querySelectorAll(".item-dropdown");
+
+  for (let k = 0; k < utensilsDropdownItems.length; k++) {
+    const dropdownItem = utensilsDropdownItems[k];
+
+    dropdownItem.addEventListener("click", handleUtensilClick);
+  }
+
+  const utensilsDropdownSearchInputs =
+    document.querySelectorAll(".dropdown-search");
+
+  for (let l = 0; l < utensilsDropdownSearchInputs.length; l++) {
+    const utensilsDropdownSearchInput = utensilsDropdownSearchInputs[l];
+    utensilsDropdownSearchInput.addEventListener("input", () => {
+      filterList(utensilsDropdownSearchInput, l);
+    });
+  }
+
+  const clearButtons = document.querySelectorAll(".clear-button");
+
+  for (let m = 0; m < clearButtons.length; m++) {
+    const clearButton = clearButtons[m];
+    clearButton.addEventListener("click", () => clearInput(m));
+  }
+
+  return selectedUtensils;
+}
+
 function handleIngredientClick(event) {
   const selectedClick = event.target;
   const selectedClickText = selectedClick.textContent;
@@ -445,7 +629,21 @@ function handleApplianceClick(event) {
   selectedClick.parentElement.parentElement.classList.remove("show");
   selectApplianceItem(selectedClick, selectedClickText);
   mainSearch();
+  console.log(appliances);
+
   appliancesDropdownFill(appliances);
+}
+
+function handleUtensilClick(event) {
+  const selectedClick = event.target;
+  const selectedClickText = selectedClick.textContent;
+
+  // createChips(selectedClick, selectedClickText);
+
+  selectedClick.parentElement.parentElement.classList.remove("show");
+  selectUtensilItem(selectedClick, selectedClickText);
+  mainSearch();
+  utensilsDropdownFill(utensils);
 }
 
 function ingredientsDropdownToggle(ingredientsDropdownContent) {
@@ -461,6 +659,14 @@ function appliancesDropdownToggle(appliancesDropdownContent) {
     appliancesDropdownContent.classList.remove("show");
   } else {
     appliancesDropdownContent.classList.add("show");
+  }
+}
+
+function utensilsDropdownToggle(utensilsDropdownContent) {
+  if (utensilsDropdownContent.classList.contains("show")) {
+    utensilsDropdownContent.classList.remove("show");
+  } else {
+    utensilsDropdownContent.classList.add("show");
   }
 }
 
@@ -562,6 +768,49 @@ function selectApplianceItem(selectedClick, selectedClickText) {
     mainSearch();
   });
 }
+function selectUtensilItem(selectedClick, selectedClickText) {
+  // changer la div sur le dropdown
+  const selectedUtensilsDiv = document.getElementById("selected-utensils");
+
+  selectedClick.removeEventListener("click", handleUtensilClick);
+
+  selectedClick.classList.replace("item-dropdown", "selected-item");
+  const deselectCross = document.createElement("img");
+  deselectCross.setAttribute("src", "assets/circle-xmark-solid.svg");
+
+  const selectedUtensilDiv = document.createElement("div");
+
+  selectedUtensilDiv.classList.add("selected-utensil-on-dropdown-container");
+  selectedUtensilDiv.classList.add("selected-item-on-dropdown-container");
+
+  selectedUtensilDiv.appendChild(selectedClick);
+  selectedUtensilDiv.appendChild(deselectCross);
+  selectedUtensilsDiv.appendChild(selectedUtensilDiv);
+
+  // créer la chip
+
+  const selectedChipsTemplate = document.getElementById("chips-template");
+  const selectedChipsTemplateClone =
+    selectedChipsTemplate.content.cloneNode(true).firstElementChild;
+  const chipsContainer = document.querySelector(".chips-container");
+
+  chipsContainer.appendChild(selectedChipsTemplateClone);
+
+  selectedChipsTemplateClone.querySelector(".chips-text").innerText =
+    selectedClick.textContent;
+
+  selectedChipsTemplateClone.firstElementChild.addEventListener("click", () => {
+    removeUtensilFromDropdown(selectedClickText);
+    removeChips(selectedClickText);
+    mainSearch();
+  });
+
+  deselectCross.addEventListener("click", () => {
+    removeUtensilFromDropdown(selectedClickText);
+    removeChips(selectedClickText);
+    mainSearch();
+  });
+}
 
 function removeIngredientFromDropdown(label) {
   const c = document.getElementById("selected-ingredients");
@@ -575,6 +824,16 @@ function removeIngredientFromDropdown(label) {
 
 function removeApplianceFromDropdown(label) {
   const c = document.getElementById("selected-appliances");
+  for (let i = 0; i < c.children.length; i++) {
+    if (c.children[i].textContent == label) {
+      c.removeChild(c.children[i]);
+      break;
+    }
+  }
+}
+
+function removeUtensilFromDropdown(label) {
+  const c = document.getElementById("selected-utensils");
   for (let i = 0; i < c.children.length; i++) {
     if (c.children[i].textContent == label) {
       c.removeChild(c.children[i]);

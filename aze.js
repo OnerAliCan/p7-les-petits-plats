@@ -1,15 +1,24 @@
-function updateAppliancesList(recipeList) {
-  let updatedApplianceArray = [];
+function filterByUtensils(recipeList) {
+  let r = [];
+  const children = document.getElementById("selected-utensils").children;
 
-  for (let i = 0; i < recipeList.length; i++) {
-    const updatedRecipe = recipeList[i];
-
-    for (let j = 0; j < updatedRecipe.appliances.length; j++) {
-      updatedApplianceArray.push(updatedRecipe.appliances[j].appliance);
-    }
+  const selectedUtensilsList = [];
+  for (let i = 0; i < children.length; i++) {
+    selectedUtensilsList.push(children[i].textContent.toLowerCase());
   }
 
-  const updatedUniqueAppliances = [...new Set(updatedApplianceArray)];
+  for (let i = 0; i < recipeList.length; i++) {
+    const recipe = recipeList[i];
 
-  return updatedUniqueAppliances;
+    const allUtensilsIncluded = selectedUtensilsList.every(selectedUtensil => {
+      return recipe.utensils.some(utensil => {
+        return utensil.utensil.toLowerCase() === selectedUtensil;
+      });
+    });
+
+    if (allUtensilsIncluded) {
+      r.push(recipe);
+    }
+  }
+  return r;
 }
