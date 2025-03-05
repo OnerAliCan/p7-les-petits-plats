@@ -44,7 +44,6 @@ function setEvents() {
   // flatten arrays
 
   uniqueIngredients = getInitialIngredientsList();
-  console.log(uniqueIngredients);
 
   appliances = getInitialAppliancesList();
 
@@ -219,15 +218,13 @@ function getInitialIngredientsList() {
 
   Object.values(recipeList).forEach(recipe => {
     Object.values(recipe.ingredients).forEach(ingredient => {
-      console.log(ingredient.ingredient);
-
       ingredientArray.push(ingredient.ingredient);
     });
   });
 
   const finalIngredientArray = [...new Set(ingredientArray)];
 
-  return [finalIngredientArray];
+  return finalIngredientArray;
 }
 
 function getInitialAppliancesList() {
@@ -261,34 +258,24 @@ function getInitialUtensilsList() {
 
 function updateIngredientsList(recipeList) {
   let updatedIngredientArray = [];
-  // Object.values(recipeList).forEach(recipe => {
-  //   Object.values(recipe.utensils).forEach(updatedRecipe => {
-  //     updatedIngredientArray.push(updatedRecipe.ingredients.ingredient);
-  //   });
-  // });
 
-  for (let i = 0; i < recipeList.length; i++) {
-    const updatedRecipe = recipeList[i];
+  Object.values(recipeList).forEach(updatedRecipes => {
+    Object.values(updatedRecipes.ingredients).forEach(updatedRecipe => {
+      updatedIngredientArray.push(updatedRecipe.ingredient);
+    });
+  });
 
-    for (let j = 0; j < updatedRecipe.ingredients.length; j++) {
-      updatedIngredientArray.push(updatedRecipe.ingredients[j].ingredient);
-      console.log(updatedIngredientArray);
-    }
-  }
+  const finalUpdatedUniqueIngredients = [...new Set(updatedIngredientArray)];
 
-  const updatedUniqueIngredients = [...new Set(updatedIngredientArray)];
-  console.log(updatedUniqueIngredients);
-
-  return updatedUniqueIngredients;
+  return finalUpdatedUniqueIngredients;
 }
 
 function updateAppliancesList(recipeList) {
   let updatedApplianceArray = [];
 
-  for (let i = 0; i < recipeList.length; i++) {
-    const updatedRecipe = recipeList[i];
-    updatedApplianceArray.push(updatedRecipe.appliance);
-  }
+  Object.values(recipeList).forEach(updatedRecipes => {
+    updatedApplianceArray.push(updatedRecipes.appliance);
+  });
 
   const updatedUniqueAppliances = [...new Set(updatedApplianceArray)];
 
@@ -298,15 +285,13 @@ function updateAppliancesList(recipeList) {
 function updateUtensilsList(recipeList) {
   let updatedUtensilArray = [];
 
-  for (let i = 0; i < recipeList.length; i++) {
-    const updatedRecipe = recipeList[i];
-    for (let j = 0; j < updatedRecipe.ustensils.length; j++) {
-      updatedRecipe.ustensils[j] =
-        updatedRecipe.ustensils[j].charAt(0).toUpperCase() +
-        updatedRecipe.ustensils[j].slice(1).toLowerCase();
-      updatedUtensilArray.push(updatedRecipe.ustensils[j]);
-    }
-  }
+  Object.values(recipeList).forEach(updatedRecipes => {
+    Object.values(updatedRecipes.ustensils).forEach(utensil => {
+      utensil =
+        utensil.charAt(0).toUpperCase() + utensil.slice(1).toLowerCase();
+      updatedUtensilArray.push(utensil);
+    });
+  });
 
   const updatedUniqueUtensils = [...new Set(updatedUtensilArray)];
 
@@ -318,13 +303,11 @@ function filterByIngredients(recipeList) {
   const children = document.getElementById("selected-ingredients").children;
 
   const selectedIngredientsList = [];
-  for (let i = 0; i < children.length; i++) {
-    selectedIngredientsList.push(children[i].textContent.toLowerCase());
-  }
+  Object.values(children).forEach(child => {
+    selectedIngredientsList.push(child.textContent.toLowerCase());
+  });
 
-  for (let i = 0; i < recipeList.length; i++) {
-    const recipe = recipeList[i];
-
+  Object.values(recipeList).forEach(recipe => {
     const allIngredientsIncluded = selectedIngredientsList.every(
       selectedIngredient => {
         return recipe.ingredients.some(ingredient => {
@@ -336,7 +319,7 @@ function filterByIngredients(recipeList) {
     if (allIngredientsIncluded) {
       r.push(recipe);
     }
-  }
+  });
   return r;
 }
 
@@ -345,13 +328,11 @@ function filterByAppliances(recipeList) {
   const children = document.getElementById("selected-appliances").children;
 
   const selectedAppliancesList = [];
-  for (let i = 0; i < children.length; i++) {
-    selectedAppliancesList.push(children[i].textContent.toLowerCase());
-  }
+  Object.values(children).forEach(child => {
+    selectedAppliancesList.push(child.textContent.toLowerCase());
+  });
 
-  for (let i = 0; i < recipeList.length; i++) {
-    const recipe = recipeList[i];
-
+  Object.values(recipeList).forEach(recipe => {
     const allAppliancesIncluded = selectedAppliancesList.every(
       selectedAppliance => {
         return recipe.appliance.toLowerCase() === selectedAppliance;
@@ -361,45 +342,20 @@ function filterByAppliances(recipeList) {
     if (allAppliancesIncluded) {
       r.push(recipe);
     }
-  }
+  });
   return r;
 }
-
-// function filterByUtensils(recipeList) {
-//   let r = [];
-//   const children = document.getElementById("selected-utensils").children;
-
-//   const selectedUtensilsList = [];
-//   for (let i = 0; i < children.length; i++) {
-//     selectedUtensilsList.push(children[i].textContent.toLowerCase());
-//   }
-
-//   for (let i = 0; i < recipeList.length; i++) {
-//     const recipe = recipeList[i];
-
-//     const allUtensilsIncluded = selectedUtensilsList.every(selectedUtensil => {
-//       return recipe.utensil.toLowerCase() === selectedUtensil;
-//     });
-
-//     if (allUtensilsIncluded) {
-//       r.push(recipe);
-//     }
-//   }
-//   return r;
-// }
 
 function filterByUtensils(recipeList) {
   let r = [];
   const children = document.getElementById("selected-utensils").children;
 
   const selectedUtensilsList = [];
-  for (let i = 0; i < children.length; i++) {
-    selectedUtensilsList.push(children[i].textContent.toLowerCase());
-  }
+  Object.values(children).forEach(child => {
+    selectedUtensilsList.push(child.textContent.toLowerCase());
+  });
 
-  for (let i = 0; i < recipeList.length; i++) {
-    const recipe = recipeList[i];
-
+  Object.values(recipeList).forEach(recipe => {
     const allUtensilsIncluded = selectedUtensilsList.every(selectedUtensil => {
       return recipe.ustensils.some(utensil => {
         return utensil.toLowerCase() === selectedUtensil;
@@ -409,33 +365,31 @@ function filterByUtensils(recipeList) {
     if (allUtensilsIncluded) {
       r.push(recipe);
     }
-  }
-
+  });
   return r;
 }
 
 function filterList(dropdownSearchInput, index) {
   const filter = dropdownSearchInput.value.toUpperCase();
-  const div = document.querySelectorAll(".dropdown-content")[index];
-  const a = div.getElementsByTagName("a");
+  const a = document.querySelectorAll(".item-dropdown");
 
-  for (let i = 0; i < a.length; i++) {
-    let txtValue = a[i].textContent || a[i].innerText;
+  Object.values(a).forEach(aElement => {
+    let txtValue = aElement.textContent || aElement.innerText;
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      a[i].style.display = "";
+      aElement.style.display = "";
     } else {
-      a[i].style.display = "none";
+      aElement.style.display = "none";
     }
-  }
+  });
 }
 
 function ingredientsDropdownFill(uniqueIngredients) {
-  debugger;
   const children = document.getElementById("selected-ingredients").children;
   const selectedIngredients = [];
-  for (let i = 0; i < children.length; i++) {
-    selectedIngredients.push(children[i].textContent);
-  }
+
+  Object.values(children).forEach(child => {
+    selectedIngredients.push(child.textContent);
+  });
 
   const filteredUniqueElementNames = uniqueIngredients.filter(
     ingredient => !selectedIngredients.includes(ingredient)
@@ -452,8 +406,7 @@ function ingredientsDropdownFill(uniqueIngredients) {
   let ingredientsDropdownItemClone;
   ingredientsDropdownContent.innerHTML = "";
 
-  for (let j = 0; j < filteredUniqueElementNames.length; j++) {
-    uniqueElementName = filteredUniqueElementNames[j];
+  Object.values(filteredUniqueElementNames).forEach(uniqueElementName => {
     ingredientsDropdownItemClone = document.importNode(
       ingredientsDropdownItemTemplate.content,
       true
@@ -461,31 +414,31 @@ function ingredientsDropdownFill(uniqueIngredients) {
     ingredientsDropdownItemClone.innerText = uniqueElementName;
 
     ingredientsDropdownContent.appendChild(ingredientsDropdownItemClone);
-  }
+  });
 
   const ingredientsDropdownItems =
     ingredientsDropdownContent.querySelectorAll(".item-dropdown");
-  for (let k = 0; k < ingredientsDropdownItems.length; k++) {
-    const dropdownItem = ingredientsDropdownItems[k];
+
+  Object.values(ingredientsDropdownItems).forEach(dropdownItem => {
     dropdownItem.addEventListener("click", handleIngredientClick);
-  }
+  });
 
   const ingredientsDropdownSearchInputs =
     document.querySelectorAll(".dropdown-search");
 
-  for (let l = 0; l < ingredientsDropdownSearchInputs.length; l++) {
-    const ingredientsDropdownSearchInput = ingredientsDropdownSearchInputs[l];
-    ingredientsDropdownSearchInput.addEventListener("input", () => {
-      filterList(ingredientsDropdownSearchInput, l);
-    });
-  }
+  Object.values(ingredientsDropdownSearchInputs).forEach(
+    (ingredientsDropdownSearchInput, l) => {
+      ingredientsDropdownSearchInput.addEventListener("input", () => {
+        filterList(ingredientsDropdownSearchInput, l);
+      });
+    }
+  );
 
   const clearButtons = document.querySelectorAll(".clear-button");
 
-  for (let m = 0; m < clearButtons.length; m++) {
-    const clearButton = clearButtons[m];
+  Object.values(clearButtons).forEach((clearButton, m) => {
     clearButton.addEventListener("click", () => clearInput(m));
-  }
+  });
 
   return selectedIngredients;
 }
@@ -494,9 +447,9 @@ function appliancesDropdownFill(appliances) {
   const children = document.getElementById("selected-appliances").children;
   const selectedAppliances = [];
 
-  for (let i = 0; i < children.length; i++) {
-    selectedAppliances.push(children[i].textContent);
-  }
+  Object.values(children).forEach(child => {
+    selectedAppliances.push(child.textContent);
+  });
 
   const filteredUniqueElementNames = appliances.filter(
     appliance => !selectedAppliances.includes(appliance)
@@ -514,8 +467,7 @@ function appliancesDropdownFill(appliances) {
 
   appliancesDropdownContent.innerHTML = "";
 
-  for (let j = 0; j < filteredUniqueElementNames.length; j++) {
-    uniqueElementName = filteredUniqueElementNames[j];
+  Object.values(filteredUniqueElementNames).forEach(uniqueElementName => {
     appliancesDropdownItemClone = document.importNode(
       appliancesDropdownItemTemplate.content,
       true
@@ -523,31 +475,32 @@ function appliancesDropdownFill(appliances) {
     appliancesDropdownItemClone.innerText = uniqueElementName;
 
     appliancesDropdownContent.appendChild(appliancesDropdownItemClone);
-  }
+  });
 
   const appliancesDropdownItems =
     appliancesDropdownContent.querySelectorAll(".item-dropdown");
-  for (let k = 0; k < appliancesDropdownItems.length; k++) {
-    const dropdownItem = appliancesDropdownItems[k];
+
+  Object.values(appliancesDropdownItems).forEach(dropdownItem => {
     dropdownItem.addEventListener("click", handleApplianceClick);
-  }
+  });
 
   const appliancesDropdownSearchInputs =
     document.querySelectorAll(".dropdown-search");
 
-  for (let l = 0; l < appliancesDropdownSearchInputs.length; l++) {
-    const appliancesDropdownSearchInput = appliancesDropdownSearchInputs[l];
-    appliancesDropdownSearchInput.addEventListener("input", () => {
-      filterList(appliancesDropdownSearchInput, l);
-    });
-  }
+  Object.values(appliancesDropdownSearchInputs).forEach(
+    (appliancesDropdownSearchInput, i) => {
+      appliancesDropdownSearchInput.addEventListener("input", () => {
+        filterList(appliancesDropdownSearchInput, i);
+      });
+    }
+  );
 
   const clearButtons = document.querySelectorAll(".clear-button");
 
-  for (let m = 0; m < clearButtons.length; m++) {
-    const clearButton = clearButtons[m];
-    clearButton.addEventListener("click", () => clearInput(m));
-  }
+  Object.values(clearButtons).forEach((clearButton, i) => {
+    clearButton.addEventListener("click", () => clearInput(i));
+  });
+
   return selectedAppliances;
 }
 
@@ -555,9 +508,9 @@ function utensilsDropdownFill(utensils) {
   const children = document.getElementById("selected-utensils").children;
   const selectedUtensils = [];
 
-  for (let i = 0; i < children.length; i++) {
-    selectedUtensils.push(children[i].textContent);
-  }
+  Object.values(children).forEach(child => {
+    selectedUtensils.push(child.textContent);
+  });
 
   const filteredUniqueElementNames = utensils.filter(
     utensil => !selectedUtensils.includes(utensil)
@@ -575,8 +528,7 @@ function utensilsDropdownFill(utensils) {
 
   utensilsDropdownContent.innerHTML = "";
 
-  for (let j = 0; j < filteredUniqueElementNames.length; j++) {
-    uniqueElementName = filteredUniqueElementNames[j];
+  Object.values(filteredUniqueElementNames).forEach(uniqueElementName => {
     utensilsDropdownItemClone = document.importNode(
       utensilsDropdownItemTemplate.content,
       true
@@ -584,33 +536,31 @@ function utensilsDropdownFill(utensils) {
     utensilsDropdownItemClone.innerText = uniqueElementName;
 
     utensilsDropdownContent.appendChild(utensilsDropdownItemClone);
-  }
+  });
 
   const utensilsDropdownItems =
     utensilsDropdownContent.querySelectorAll(".item-dropdown");
 
-  for (let k = 0; k < utensilsDropdownItems.length; k++) {
-    const dropdownItem = utensilsDropdownItems[k];
-
+  Object.values(utensilsDropdownItems).forEach(dropdownItem => {
     dropdownItem.addEventListener("click", handleUtensilClick);
-  }
+  });
 
   const utensilsDropdownSearchInputs =
     document.querySelectorAll(".dropdown-search");
 
-  for (let l = 0; l < utensilsDropdownSearchInputs.length; l++) {
-    const utensilsDropdownSearchInput = utensilsDropdownSearchInputs[l];
-    utensilsDropdownSearchInput.addEventListener("input", () => {
-      filterList(utensilsDropdownSearchInput, l);
-    });
-  }
+  Object.values(utensilsDropdownSearchInputs).forEach(
+    (utensilsDropdownSearchInput, i) => {
+      utensilsDropdownSearchInput.addEventListener("input", () => {
+        filterList(utensilsDropdownSearchInput, i);
+      });
+    }
+  );
 
   const clearButtons = document.querySelectorAll(".clear-button");
 
-  for (let m = 0; m < clearButtons.length; m++) {
-    const clearButton = clearButtons[m];
-    clearButton.addEventListener("click", () => clearInput(m));
-  }
+  Object.values(clearButtons).forEach((clearButton, i) => {
+    clearButton.addEventListener("click", () => clearInput(i));
+  });
 
   return selectedUtensils;
 }
@@ -637,7 +587,6 @@ function handleApplianceClick(event) {
   selectedClick.parentElement.parentElement.classList.remove("show");
   selectApplianceItem(selectedClick, selectedClickText);
   mainSearch();
-  console.log(appliances);
 
   appliancesDropdownFill(appliances);
 }
@@ -822,44 +771,47 @@ function selectUtensilItem(selectedClick, selectedClickText) {
 
 function removeIngredientFromDropdown(label) {
   const c = document.getElementById("selected-ingredients");
-  for (let i = 0; i < c.children.length; i++) {
-    if (c.children[i].textContent == label) {
-      c.removeChild(c.children[i]);
-      break;
+
+  Object.values(c.children).forEach(child => {
+    if (child.textContent == label) {
+      c.removeChild(child);
+      return;
     }
-  }
+  });
 }
 
 function removeApplianceFromDropdown(label) {
   const c = document.getElementById("selected-appliances");
-  for (let i = 0; i < c.children.length; i++) {
-    if (c.children[i].textContent == label) {
-      c.removeChild(c.children[i]);
-      break;
+
+  Object.values(c.children).forEach(child => {
+    if (child.textContent == label) {
+      c.removeChild(child);
+      return;
     }
-  }
+  });
 }
 
 function removeUtensilFromDropdown(label) {
   const c = document.getElementById("selected-utensils");
-  for (let i = 0; i < c.children.length; i++) {
-    if (c.children[i].textContent == label) {
-      c.removeChild(c.children[i]);
-      break;
+  Object.values(c.children).forEach(child => {
+    if (child.textContent == label) {
+      c.removeChild(child);
+      return;
     }
-  }
+  });
 }
 
 function removeChips(label) {
   const c = document.getElementById("chips-container-id");
-  for (let i = 0; i < c.children.length; i++) {
+
+  Object.values(c.children).forEach(child => {
     console.log("é");
 
-    if (c.children[i].textContent.trim() == label) {
-      c.removeChild(c.children[i]);
-      break;
+    if (child.textContent.trim() == label) {
+      c.removeChild(child);
+      return;
     }
-  }
+  });
 }
 
 function clearInput(index) {
@@ -877,52 +829,100 @@ function displayRecipes(recipeList) {
   const recipeTemplate = document.getElementById("recipe-card-template");
   const recipeSection = document.querySelector(".recipe-section");
   recipeSection.innerHTML = "";
+  // for (let i = 0; i < recipeList.length; i++) {
+  //   const recipeTemplateClone = document.importNode(
+  //     recipeTemplate.content,
+  //     true
+  //   );
 
-  for (let i = 0; i < recipeList.length; i++) {
+  //   recipeTemplateClone.firstElementChild.firstElementChild.firstElementChild.src =
+  //     "assets/recipes_img/" + recipeList[i].image;
+
+  //   recipeTemplateClone.firstElementChild.firstElementChild.nextElementSibling.innerHTML =
+  //     "<p>" + recipeList[i].time + "mn</p>";
+
+  //   recipeTemplateClone.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild.innerText =
+  //     recipeList[i].name;
+
+  //   recipeTemplateClone.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.innerText =
+  //     recipeList[i].description;
+
+  //   for (let j = 0; j < recipeList[i].ingredients.length; j++) {
+  //     console.log(j);
+
+  //     const ingredientsItemsContainer = recipeTemplateClone.querySelectorAll(
+  //       ".ingredients-items-container"
+  //     );
+
+  //     ingredientsItemsContainer[j].firstElementChild.innerText =
+  //       recipeList[i].ingredients[j].ingredient;
+
+  //     if (typeof recipeList[i].ingredients[j].quantity !== "undefined") {
+  //       if (typeof recipeList[i].ingredients[j].unit !== "undefined") {
+  //         ingredientsItemsContainer[
+  //           j
+  //         ].firstElementChild.nextElementSibling.innerText =
+  //           recipeList[i].ingredients[j].quantity +
+  //           " " +
+  //           recipeList[i].ingredients[j].unit;
+  //       } else {
+  //         ingredientsItemsContainer[
+  //           j
+  //         ].firstElementChild.nextElementSibling.innerText =
+  //           recipeList[i].ingredients[j].quantity;
+  //       }
+  //     }
+  //   }
+
+  //   recipeSection.appendChild(recipeTemplateClone);
+  // }
+
+  Object.values(recipeList).forEach((recipe, i) => {
     const recipeTemplateClone = document.importNode(
       recipeTemplate.content,
       true
     );
 
     recipeTemplateClone.firstElementChild.firstElementChild.firstElementChild.src =
-      "assets/recipes_img/" + recipeList[i].image;
+      "assets/recipes_img/" + recipe.image;
 
     recipeTemplateClone.firstElementChild.firstElementChild.nextElementSibling.innerHTML =
-      "<p>" + recipeList[i].time + "mn</p>";
+      "<p>" + recipe.time + "mn</p>";
 
     recipeTemplateClone.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild.innerText =
-      recipeList[i].name;
+      recipe.name;
 
     recipeTemplateClone.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling.firstElementChild.nextElementSibling.firstElementChild.firstElementChild.nextElementSibling.innerText =
-      recipeList[i].description;
+      recipe.description;
 
-    for (let j = 0; j < recipeList[i].ingredients.length; j++) {
+    Object.values(recipe.ingredients).forEach((ingredient, j) => {
       const ingredientsItemsContainer = recipeTemplateClone.querySelectorAll(
         ".ingredients-items-container"
       );
+      console.log(ingredient);
 
-      ingredientsItemsContainer[j].firstElementChild.innerText =
-        recipeList[i].ingredients[j].ingredient;
+      const element = ingredientsItemsContainer[j].firstElementChild;
 
-      if (typeof recipeList[i].ingredients[j].quantity !== "undefined") {
-        if (typeof recipeList[i].ingredients[j].unit !== "undefined") {
+      ingredientsItemsContainer[j].firstElementChild.textContent =
+        ingredient.ingredient;
+      // console.log(ingredientsItemsContainer.length);
+      // console.log(ingredient.length);
+
+      if (typeof ingredient.quantity !== "undefined") {
+        if (typeof ingredient.unit !== "undefined") {
           ingredientsItemsContainer[
-            j
+            i
           ].firstElementChild.nextElementSibling.innerText =
-            recipeList[i].ingredients[j].quantity +
-            " " +
-            recipeList[i].ingredients[j].unit;
+            ingredient.quantity + " " + ingredient.unit;
         } else {
           ingredientsItemsContainer[
-            j
+            i
           ].firstElementChild.nextElementSibling.innerText =
-            recipeList[i].ingredients[j].quantity;
+            ingredient.quantity;
         }
       }
-    }
-
-    recipeSection.appendChild(recipeTemplateClone);
-  }
+    });
+  });
 }
 
 function displayNoRecipes(recipeList, searchInputValue) {
