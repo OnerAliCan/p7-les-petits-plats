@@ -21,10 +21,6 @@ function setEvents() {
     "appliances-dropdown-button"
   ).firstElementChild;
 
-  console.log(
-    document.getElementById("utensils-dropdown-button").firstElementChild
-  );
-
   const utensilsDropdownButton = document.getElementById(
     "utensils-dropdown-button"
   ).firstElementChild;
@@ -896,6 +892,9 @@ function displayRecipes(recipeList) {
       const ingredientsItemsContainer = recipeTemplateClone.querySelectorAll(
         ".ingredients-items-container"
       );
+
+      const ingredientza = recipeList[i].ingredients;
+      console.log(ingredientza);
 
       ingredientsItemsContainer[j].firstElementChild.innerText =
         recipeList[i].ingredients[j].ingredient;
