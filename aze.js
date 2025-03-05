@@ -1,24 +1,40 @@
-function filterByUtensils(recipeList) {
-  let r = [];
-  const children = document.getElementById("selected-utensils").children;
+document.addEventListener("click", function (event) {
+  Object.values(dropdownContents).forEach((dropdownContent, i) => {
+    if (
+      !dropdownContent.contains(event.target) &&
+      !dropdownButtons[i].contains(event.target)
+    ) {
+      dropdownContent.classList.remove("show");
+    }
+  });
+});
 
-  const selectedUtensilsList = [];
-  for (let i = 0; i < children.length; i++) {
-    selectedUtensilsList.push(children[i].textContent.toLowerCase());
-  }
+function getInitialAppliancesList() {
+  let recipeList = [...recipes];
+  const appliancesArray = [];
+
+  Object.values(recipeList).forEach(appliance => {
+    console.log(appliance);
+  });
 
   for (let i = 0; i < recipeList.length; i++) {
-    const recipe = recipeList[i];
+    const appliance = recipeList[i].appliance;
 
-    const allUtensilsIncluded = selectedUtensilsList.every(selectedUtensil => {
-      return recipe.utensils.some(utensil => {
-        return utensil.utensil.toLowerCase() === selectedUtensil;
-      });
-    });
-
-    if (allUtensilsIncluded) {
-      r.push(recipe);
-    }
+    appliancesArray.push(appliance);
   }
-  return r;
+  return [...new Set(appliancesArray)];
+}
+
+Object.values(recipeList).forEach(recipe => {
+  Object.values(recipe.utensils).forEach(updatedRecipe => {
+    updatedIngredientArray.push(updatedRecipe.ingredients[j].ingredient);
+  });
+});
+
+for (let i = 0; i < recipeList.length; i++) {
+  const updatedRecipe = recipeList[i];
+
+  for (let j = 0; j < updatedRecipe.ingredients.length; j++) {
+    updatedIngredientArray.push(updatedRecipe.ingredients[j].ingredient);
+  }
 }

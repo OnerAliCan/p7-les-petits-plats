@@ -29,20 +29,22 @@ function setEvents() {
   const dropdownContents = document.getElementsByClassName("dropdown-content");
 
   // Enlever la classe 'show' si on clique en dehors des dropdowns
+
   document.addEventListener("click", function (event) {
-    for (let i = 0; i < dropdownContents.length; i++) {
+    Object.values(dropdownContents).forEach((dropdownContent, i) => {
       if (
-        !dropdownContents[i].contains(event.target) &&
+        !dropdownContent.contains(event.target) &&
         !dropdownButtons[i].contains(event.target)
       ) {
-        dropdownContents[i].classList.remove("show");
+        dropdownContent.classList.remove("show");
       }
-    }
+    });
   });
 
   // flatten arrays
 
   uniqueIngredients = getInitialIngredientsList();
+  console.log(uniqueIngredients);
 
   appliances = getInitialAppliancesList();
 
@@ -189,8 +191,7 @@ function filterBySearch(recipeList, searchInput) {
   const r = [];
   const searchValue = searchInput.value.toLowerCase();
 
-  for (let i = 0; i < recipeList.length; i++) {
-    const recipe = recipeList[i];
+  Object.values(recipeList).forEach(recipe => {
     let ingredientName;
 
     if (
@@ -198,75 +199,85 @@ function filterBySearch(recipeList, searchInput) {
       recipe.description.toLowerCase().includes(searchValue)
     ) {
       r.push(recipe);
-      continue;
+      return;
     }
 
-    for (let j = 0; j < recipe.ingredients.length; j++) {
-      ingredientName = recipe.ingredients[j].ingredient;
+    Object.values(recipe.ingredients).forEach(ingredient => {
+      ingredientName = ingredient.ingredient;
 
       if (ingredientName.toLowerCase().includes(searchValue)) {
         r.push(recipe);
-        break;
+        return;
       }
-    }
-  }
+    });
+  });
   return r;
 }
 function getInitialIngredientsList() {
   let recipeList = [...recipes];
   const ingredientArray = [];
 
-  for (let i = 0; i < recipeList.length; i++) {
-    const recipe = recipeList[i];
-    for (let j = 0; j < recipe.ingredients.length; j++) {
-      ingredientArray.push(recipe.ingredients[j].ingredient);
-    }
-  }
-  return [...new Set(ingredientArray)];
+  Object.values(recipeList).forEach(recipe => {
+    Object.values(recipe.ingredients).forEach(ingredient => {
+      console.log(ingredient.ingredient);
+
+      ingredientArray.push(ingredient.ingredient);
+    });
+  });
+
+  const finalIngredientArray = [...new Set(ingredientArray)];
+
+  return [finalIngredientArray];
 }
 
 function getInitialAppliancesList() {
   let recipeList = [...recipes];
   const appliancesArray = [];
 
-  for (let i = 0; i < recipeList.length; i++) {
-    const appliance = recipeList[i].appliance;
+  Object.values(recipeList).forEach(recipe => {
+    appliancesArray.push(recipe.appliance);
+  });
+  const finalAppliancesArray = [...new Set(appliancesArray)];
 
-    appliancesArray.push(appliance);
-  }
-  return [...new Set(appliancesArray)];
+  return finalAppliancesArray;
 }
 
 function getInitialUtensilsList() {
   let recipeList = [...recipes];
   const utensilsArray = [];
-
-  for (let i = 0; i < recipeList.length; i++) {
-    const utensilList = recipeList[i].ustensils;
-    for (let j = 0; j < utensilList.length; j++) {
-      let utensil = utensilList[j];
+  Object.values(recipeList).forEach(recipe => {
+    Object.values(recipe.ustensils).forEach(utensil => {
       utensil = utensil.toLowerCase();
       utensil =
         utensil.charAt(0).toUpperCase() + utensil.slice(1).toLowerCase();
       utensilsArray.push(utensil);
-    }
-  }
+    });
+  });
+
   const uniqueUtensilsArray = [...new Set(utensilsArray)];
+
   return uniqueUtensilsArray;
 }
 
 function updateIngredientsList(recipeList) {
   let updatedIngredientArray = [];
+  // Object.values(recipeList).forEach(recipe => {
+  //   Object.values(recipe.utensils).forEach(updatedRecipe => {
+  //     updatedIngredientArray.push(updatedRecipe.ingredients.ingredient);
+  //   });
+  // });
 
   for (let i = 0; i < recipeList.length; i++) {
     const updatedRecipe = recipeList[i];
 
     for (let j = 0; j < updatedRecipe.ingredients.length; j++) {
       updatedIngredientArray.push(updatedRecipe.ingredients[j].ingredient);
+      console.log(updatedIngredientArray);
     }
   }
 
   const updatedUniqueIngredients = [...new Set(updatedIngredientArray)];
+  console.log(updatedUniqueIngredients);
 
   return updatedUniqueIngredients;
 }
@@ -419,6 +430,7 @@ function filterList(dropdownSearchInput, index) {
 }
 
 function ingredientsDropdownFill(uniqueIngredients) {
+  debugger;
   const children = document.getElementById("selected-ingredients").children;
   const selectedIngredients = [];
   for (let i = 0; i < children.length; i++) {
