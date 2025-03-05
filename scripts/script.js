@@ -173,7 +173,7 @@ function mainSearch() {
   if (recipeList.length !== 0) {
     displayRecipes(recipeList);
   } else {
-    displayNoRecipes();
+    displayNoRecipes(recipeList, searchInput.value);
   }
 
   // update dropdown lists
@@ -188,10 +188,6 @@ function mainSearch() {
 function filterBySearch(recipeList, searchInput) {
   const r = [];
   const searchValue = searchInput.value.toLowerCase();
-  // const searchValueArray = [];
-  // searchValueArray.shift();
-  // searchValueArray.push(searchValue);
-  // const searchValueArrayFirstValue = searchValueArray[0];
 
   for (let i = 0; i < recipeList.length; i++) {
     const recipe = recipeList[i];
@@ -917,11 +913,19 @@ function displayRecipes(recipeList) {
   }
 }
 
-function displayNoRecipes() {
+function displayNoRecipes(recipeList, searchInputValue) {
   const recipeListLengthDisplay = document.querySelector(".recipe-length");
 
   recipeListLengthDisplay.innerText = "0";
   const recipeSection = document.querySelector(".recipe-section");
+
+  const noRecipes = document.createElement("div");
+  noRecipes.textContent =
+    "Aucun élément ne contient " +
+    searchInputValue +
+    ",  vous pouvez chercher « tarte aux pommes », « poisson » , etc";
   recipeSection.innerHTML = "";
+  recipeSection.appendChild(noRecipes);
+
   console.log("rieng");
 }
