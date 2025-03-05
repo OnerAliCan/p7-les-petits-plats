@@ -168,19 +168,19 @@ function mainSearch() {
     recipeList = filterByUtensils(recipeList);
   }
 
-  // recipe display & displayed number change
-
-  if (recipeList.length !== 0) {
-    displayRecipes(recipeList);
-  } else {
-    displayNoRecipes();
-  }
-
   // update dropdown lists
   uniqueIngredients = updateIngredientsList(recipeList);
   appliances = updateAppliancesList(recipeList);
 
   utensils = updateUtensilsList(recipeList);
+
+  // recipe display & displayed number change
+
+  if (recipeList.length !== 0) {
+    displayRecipes(recipeList);
+  } else {
+    displayNoRecipes(recipeList, searchInput.value);
+  }
 
   return recipeList;
 }
@@ -917,11 +917,19 @@ function displayRecipes(recipeList) {
   }
 }
 
-function displayNoRecipes() {
+function displayNoRecipes(recipeList, searchInputValue) {
   const recipeListLengthDisplay = document.querySelector(".recipe-length");
 
   recipeListLengthDisplay.innerText = "0";
   const recipeSection = document.querySelector(".recipe-section");
+
+  const noRecipes = document.createElement("div");
+  noRecipes.textContent =
+    "Aucun élément ne contient " +
+    searchInputValue +
+    ",  vous pouvez chercher « tarte aux pommes », « poisson » , etc";
   recipeSection.innerHTML = "";
+  recipeSection.appendChild(noRecipes);
+
   console.log("rieng");
 }
