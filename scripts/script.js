@@ -188,10 +188,6 @@ function mainSearch() {
 function filterBySearch(recipeList, searchInput) {
   const r = [];
   const searchValue = searchInput.value.toLowerCase();
-  // const searchValueArray = [];
-  // searchValueArray.shift();
-  // searchValueArray.push(searchValue);
-  // const searchValueArrayFirstValue = searchValueArray[0];
 
   for (let i = 0; i < recipeList.length; i++) {
     const recipe = recipeList[i];
@@ -358,29 +354,6 @@ function filterByAppliances(recipeList) {
   return r;
 }
 
-// function filterByUtensils(recipeList) {
-//   let r = [];
-//   const children = document.getElementById("selected-utensils").children;
-
-//   const selectedUtensilsList = [];
-//   for (let i = 0; i < children.length; i++) {
-//     selectedUtensilsList.push(children[i].textContent.toLowerCase());
-//   }
-
-//   for (let i = 0; i < recipeList.length; i++) {
-//     const recipe = recipeList[i];
-
-//     const allUtensilsIncluded = selectedUtensilsList.every(selectedUtensil => {
-//       return recipe.utensil.toLowerCase() === selectedUtensil;
-//     });
-
-//     if (allUtensilsIncluded) {
-//       r.push(recipe);
-//     }
-//   }
-//   return r;
-// }
-
 function filterByUtensils(recipeList) {
   let r = [];
   const children = document.getElementById("selected-utensils").children;
@@ -414,7 +387,7 @@ function filterList(dropdownSearchInput, index) {
 
   for (let i = 0; i < a.length; i++) {
     let txtValue = a[i].textContent || a[i].innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+    if (txtValue.toUpperCase().includes(filter)) {
       a[i].style.display = "";
     } else {
       a[i].style.display = "none";
@@ -429,9 +402,15 @@ function ingredientsDropdownFill(uniqueIngredients) {
     selectedIngredients.push(children[i].textContent);
   }
 
-  const filteredUniqueElementNames = uniqueIngredients.filter(
-    ingredient => !selectedIngredients.includes(ingredient)
-  );
+  const filteredUniqueElementNames = [];
+
+  for (let i = 0; i < uniqueIngredients.length; i++) {
+    const uniqueIngredient = uniqueIngredients[i];
+
+    if (!selectedIngredients.includes(uniqueIngredient)) {
+      filteredUniqueElementNames.push(uniqueIngredient);
+    }
+  }
 
   let uniqueElementName;
   const ingredientsDropdownItemTemplate = document.getElementById(
@@ -490,9 +469,15 @@ function appliancesDropdownFill(appliances) {
     selectedAppliances.push(children[i].textContent);
   }
 
-  const filteredUniqueElementNames = appliances.filter(
-    appliance => !selectedAppliances.includes(appliance)
-  );
+  const filteredUniqueElementNames = [];
+
+  for (let i = 0; i < appliances.length; i++) {
+    const appliance = appliances[i];
+
+    if (!selectedAppliances.includes(appliance)) {
+      filteredUniqueElementNames.push(appliance);
+    }
+  }
 
   let uniqueElementName;
   const appliancesDropdownItemTemplate = document.getElementById(
@@ -551,9 +536,15 @@ function utensilsDropdownFill(utensils) {
     selectedUtensils.push(children[i].textContent);
   }
 
-  const filteredUniqueElementNames = utensils.filter(
-    utensil => !selectedUtensils.includes(utensil)
-  );
+  const filteredUniqueElementNames = [];
+
+  for (let i = 0; i < utensils.length; i++) {
+    const utensil = utensils[i];
+
+    if (!selectedUtensils.includes(utensil)) {
+      filteredUniqueElementNames.push(utensil);
+    }
+  }
 
   let uniqueElementName;
   const utensilsDropdownItemTemplate = document.getElementById(
@@ -611,8 +602,6 @@ function handleIngredientClick(event) {
   const selectedClick = event.target;
   const selectedClickText = selectedClick.textContent;
 
-  // createChips(selectedClick, selectedClickText);
-
   selectedClick.parentElement.parentElement.classList.remove("show");
   selectIngredientItem(selectedClick, selectedClickText);
 
@@ -624,12 +613,9 @@ function handleApplianceClick(event) {
   const selectedClick = event.target;
   const selectedClickText = selectedClick.textContent;
 
-  // createChips(selectedClick, selectedClickText);
-
   selectedClick.parentElement.parentElement.classList.remove("show");
   selectApplianceItem(selectedClick, selectedClickText);
   mainSearch();
-  console.log(appliances);
 
   appliancesDropdownFill(appliances);
 }
@@ -637,8 +623,6 @@ function handleApplianceClick(event) {
 function handleUtensilClick(event) {
   const selectedClick = event.target;
   const selectedClickText = selectedClick.textContent;
-
-  // createChips(selectedClick, selectedClickText);
 
   selectedClick.parentElement.parentElement.classList.remove("show");
   selectUtensilItem(selectedClick, selectedClickText);
@@ -703,22 +687,20 @@ function selectIngredientItem(selectedClick, selectedClickText) {
 
   chipsContainer.appendChild(selectedChipsTemplateClone);
 
-  selectedChipsTemplateClone.querySelector(".chips-text").innerText =
+  selectedChipsTemplateClone.querySelector(".chips-text").textContent =
     selectedClick.textContent;
 
-  selectedChipsTemplateClone.firstElementChild.addEventListener("click", () => {
-    removeIngredientFromDropdown(selectedClickText);
-    removeChips(selectedClickText);
-    mainSearch();
-  });
+  selectedChipsTemplateClone.firstElementChild.nextElementSibling.addEventListener(
+    "click",
+    () => {
+      removeIngredientFromDropdown(selectedClickText);
+      removeChips(selectedClickText);
+      mainSearch();
+    }
+  );
 
   deselectCross.addEventListener("click", () => {
     removeIngredientFromDropdown(selectedClickText);
-
-    // document
-    //   .getElementById("dropdown-ingredients-content")
-    //   .classList.remove("show");
-
     removeChips(selectedClickText);
     mainSearch();
   });
@@ -756,11 +738,14 @@ function selectApplianceItem(selectedClick, selectedClickText) {
   selectedChipsTemplateClone.querySelector(".chips-text").innerText =
     selectedClick.textContent;
 
-  selectedChipsTemplateClone.firstElementChild.addEventListener("click", () => {
-    removeApplianceFromDropdown(selectedClickText);
-    removeChips(selectedClickText);
-    mainSearch();
-  });
+  selectedChipsTemplateClone.firstElementChild.nextElementSibling.addEventListener(
+    "click",
+    () => {
+      removeApplianceFromDropdown(selectedClickText);
+      removeChips(selectedClickText);
+      mainSearch();
+    }
+  );
 
   deselectCross.addEventListener("click", () => {
     removeApplianceFromDropdown(selectedClickText);
@@ -799,11 +784,14 @@ function selectUtensilItem(selectedClick, selectedClickText) {
   selectedChipsTemplateClone.querySelector(".chips-text").innerText =
     selectedClick.textContent;
 
-  selectedChipsTemplateClone.firstElementChild.addEventListener("click", () => {
-    removeUtensilFromDropdown(selectedClickText);
-    removeChips(selectedClickText);
-    mainSearch();
-  });
+  selectedChipsTemplateClone.firstElementChild.nextElementSibling.addEventListener(
+    "click",
+    () => {
+      removeUtensilFromDropdown(selectedClickText);
+      removeChips(selectedClickText);
+      mainSearch();
+    }
+  );
 
   deselectCross.addEventListener("click", () => {
     removeUtensilFromDropdown(selectedClickText);
@@ -845,8 +833,6 @@ function removeUtensilFromDropdown(label) {
 function removeChips(label) {
   const c = document.getElementById("chips-container-id");
   for (let i = 0; i < c.children.length; i++) {
-    console.log("é");
-
     if (c.children[i].textContent.trim() == label) {
       c.removeChild(c.children[i]);
       break;
@@ -912,7 +898,6 @@ function displayRecipes(recipeList) {
         }
       }
     }
-
     recipeSection.appendChild(recipeTemplateClone);
   }
 }
@@ -930,6 +915,4 @@ function displayNoRecipes(recipeList, searchInputValue) {
     ",  vous pouvez chercher « tarte aux pommes », « poisson » , etc";
   recipeSection.innerHTML = "";
   recipeSection.appendChild(noRecipes);
-
-  console.log("rieng");
 }
