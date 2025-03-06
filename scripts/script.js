@@ -190,7 +190,7 @@ function filterBySearch(recipeList, searchInput) {
   const r = [];
   const searchValue = searchInput.value.toLowerCase();
 
-  Object.values(recipeList).forEach(recipe => {
+  recipeList.forEach(recipe => {
     let ingredientName;
 
     if (
@@ -201,7 +201,7 @@ function filterBySearch(recipeList, searchInput) {
       return;
     }
 
-    Object.values(recipe.ingredients).forEach(ingredient => {
+    recipe.ingredients.forEach(ingredient => {
       ingredientName = ingredient.ingredient;
 
       if (ingredientName.toLowerCase().includes(searchValue)) {
@@ -216,8 +216,8 @@ function getInitialIngredientsList() {
   let recipeList = [...recipes];
   const ingredientArray = [];
 
-  Object.values(recipeList).forEach(recipe => {
-    Object.values(recipe.ingredients).forEach(ingredient => {
+  recipeList.forEach(recipe => {
+    recipe.ingredients.forEach(ingredient => {
       ingredientArray.push(ingredient.ingredient);
     });
   });
@@ -231,7 +231,7 @@ function getInitialAppliancesList() {
   let recipeList = [...recipes];
   const appliancesArray = [];
 
-  Object.values(recipeList).forEach(recipe => {
+  recipeList.forEach(recipe => {
     appliancesArray.push(recipe.appliance);
   });
   const finalAppliancesArray = [...new Set(appliancesArray)];
@@ -242,8 +242,8 @@ function getInitialAppliancesList() {
 function getInitialUtensilsList() {
   let recipeList = [...recipes];
   const utensilsArray = [];
-  Object.values(recipeList).forEach(recipe => {
-    Object.values(recipe.ustensils).forEach(utensil => {
+  recipeList.forEach(recipe => {
+    recipe.ustensils.forEach(utensil => {
       utensil = utensil.toLowerCase();
       utensil =
         utensil.charAt(0).toUpperCase() + utensil.slice(1).toLowerCase();
@@ -259,8 +259,8 @@ function getInitialUtensilsList() {
 function updateIngredientsList(recipeList) {
   let updatedIngredientArray = [];
 
-  Object.values(recipeList).forEach(updatedRecipes => {
-    Object.values(updatedRecipes.ingredients).forEach(updatedRecipe => {
+  recipeList.forEach(updatedRecipes => {
+    updatedRecipes.ingredients.forEach(updatedRecipe => {
       updatedIngredientArray.push(updatedRecipe.ingredient);
     });
   });
@@ -273,7 +273,7 @@ function updateIngredientsList(recipeList) {
 function updateAppliancesList(recipeList) {
   let updatedApplianceArray = [];
 
-  Object.values(recipeList).forEach(updatedRecipes => {
+  recipeList.forEach(updatedRecipes => {
     updatedApplianceArray.push(updatedRecipes.appliance);
   });
 
@@ -285,8 +285,8 @@ function updateAppliancesList(recipeList) {
 function updateUtensilsList(recipeList) {
   let updatedUtensilArray = [];
 
-  Object.values(recipeList).forEach(updatedRecipes => {
-    Object.values(updatedRecipes.ustensils).forEach(utensil => {
+  recipeList.forEach(updatedRecipes => {
+    updatedRecipes.ustensils.forEach(utensil => {
       utensil =
         utensil.charAt(0).toUpperCase() + utensil.slice(1).toLowerCase();
       updatedUtensilArray.push(utensil);
@@ -307,7 +307,7 @@ function filterByIngredients(recipeList) {
     selectedIngredientsList.push(child.textContent.toLowerCase());
   });
 
-  Object.values(recipeList).forEach(recipe => {
+  recipeList.forEach(recipe => {
     const allIngredientsIncluded = selectedIngredientsList.every(
       selectedIngredient => {
         return recipe.ingredients.some(ingredient => {
@@ -332,7 +332,7 @@ function filterByAppliances(recipeList) {
     selectedAppliancesList.push(child.textContent.toLowerCase());
   });
 
-  Object.values(recipeList).forEach(recipe => {
+  recipeList.forEach(recipe => {
     const allAppliancesIncluded = selectedAppliancesList.every(
       selectedAppliance => {
         return recipe.appliance.toLowerCase() === selectedAppliance;
@@ -355,7 +355,7 @@ function filterByUtensils(recipeList) {
     selectedUtensilsList.push(child.textContent.toLowerCase());
   });
 
-  Object.values(recipeList).forEach(recipe => {
+  recipeList.forEach(recipe => {
     const allUtensilsIncluded = selectedUtensilsList.every(selectedUtensil => {
       return recipe.ustensils.some(utensil => {
         return utensil.toLowerCase() === selectedUtensil;
@@ -405,7 +405,7 @@ function ingredientsDropdownFill(uniqueIngredients) {
   let ingredientsDropdownItemClone;
   ingredientsDropdownContent.innerHTML = "";
 
-  Object.values(filteredUniqueElementNames).forEach(uniqueElementName => {
+  filteredUniqueElementNames.forEach(uniqueElementName => {
     ingredientsDropdownItemClone = document.importNode(
       ingredientsDropdownItemTemplate.content,
       true
@@ -465,7 +465,7 @@ function appliancesDropdownFill(appliances) {
 
   appliancesDropdownContent.innerHTML = "";
 
-  Object.values(filteredUniqueElementNames).forEach(uniqueElementName => {
+  filteredUniqueElementNames.forEach(uniqueElementName => {
     appliancesDropdownItemClone = document.importNode(
       appliancesDropdownItemTemplate.content,
       true
@@ -669,10 +669,6 @@ function selectIngredientItem(selectedClick, selectedClickText) {
   deselectCross.addEventListener("click", () => {
     removeIngredientFromDropdown(selectedClickText);
 
-    // document
-    //   .getElementById("dropdown-ingredients-content")
-    //   .classList.remove("show");
-
     removeChips(selectedClickText);
     mainSearch();
   });
@@ -802,8 +798,6 @@ function removeChips(label) {
   const c = document.getElementById("chips-container-id");
 
   Object.values(c.children).forEach(child => {
-    console.log("é");
-
     if (child.textContent.trim() == label) {
       c.removeChild(child);
       return;
@@ -882,6 +876,4 @@ function displayNoRecipes(recipeList, searchInputValue) {
     ",  vous pouvez chercher « tarte aux pommes », « poisson » , etc";
   recipeSection.innerHTML = "";
   recipeSection.appendChild(noRecipes);
-
-  console.log("rieng");
 }
