@@ -660,7 +660,7 @@ function selectIngredientItem(selectedClick, selectedClickText) {
   selectedChipsTemplateClone.querySelector(".chips-text").innerText =
     selectedClick.textContent;
 
-  selectedChipsTemplateClone.firstElementChild.addEventListener("click", () => {
+  selectedChipsTemplateClone.firstElementChild.nextElementSibling.addEventListener("click", () => {
     removeIngredientFromDropdown(selectedClickText);
     removeChips(selectedClickText);
     mainSearch();
@@ -706,7 +706,7 @@ function selectApplianceItem(selectedClick, selectedClickText) {
   selectedChipsTemplateClone.querySelector(".chips-text").innerText =
     selectedClick.textContent;
 
-  selectedChipsTemplateClone.firstElementChild.addEventListener("click", () => {
+  selectedChipsTemplateClone.firstElementChild.nextElementSibling.addEventListener("click", () => {
     removeApplianceFromDropdown(selectedClickText);
     removeChips(selectedClickText);
     mainSearch();
@@ -749,7 +749,7 @@ function selectUtensilItem(selectedClick, selectedClickText) {
   selectedChipsTemplateClone.querySelector(".chips-text").innerText =
     selectedClick.textContent;
 
-  selectedChipsTemplateClone.firstElementChild.addEventListener("click", () => {
+  selectedChipsTemplateClone.firstElementChild.nextElementSibling.addEventListener("click", () => {
     removeUtensilFromDropdown(selectedClickText);
     removeChips(selectedClickText);
     mainSearch();
