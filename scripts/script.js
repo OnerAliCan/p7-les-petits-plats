@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 window.addEventListener("load", () => {
   let recipeList = [...recipes];
   setEvents();
