@@ -316,14 +316,21 @@ function filterByIngredients(recipeList) {
   for (let i = 0; i < recipeList.length; i++) {
     const recipe = recipeList[i];
 
-    const allIngredientsIncluded = selectedIngredientsList.every(
-      selectedIngredient => {
-        return recipe.ingredients.some(ingredient => {
-          return ingredient.ingredient.toLowerCase() === selectedIngredient;
-        });
-      }
-    );
+    let allIngredientsIncluded = true;
 
+  for (let i = 0; i < selectedIngredientsList.length; i++) {
+    let found = false;
+    for (let j = 0; j < recipe.ingredients.length; j++) {
+      if (recipe.ingredients[j].ingredient.toLowerCase() === selectedIngredientsList[i]) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      allIngredientsIncluded = false;
+      break;
+    }
+  }
     if (allIngredientsIncluded) {
       r.push(recipe);
     }
@@ -343,11 +350,22 @@ function filterByAppliances(recipeList) {
   for (let i = 0; i < recipeList.length; i++) {
     const recipe = recipeList[i];
 
-    const allAppliancesIncluded = selectedAppliancesList.every(
-      selectedAppliance => {
-        return recipe.appliance.toLowerCase() === selectedAppliance;
-      }
-    );
+    // const allAppliancesIncluded = selectedAppliancesList.every(
+    //   selectedAppliance => {
+    //     return recipe.appliance.toLowerCase() === selectedAppliance;
+    //   }
+    // );
+
+    // On suppose que tous les appareils sélectionnés sont présents
+  let allAppliancesIncluded = true;
+
+// Parcourt chaque appareil sélectionné
+  for (let i = 0; i < selectedAppliancesList.length; i++) {
+    if (recipe.appliance.toLowerCase() !== selectedAppliancesList[i]) {
+      allAppliancesIncluded = false; // L'appareil ne correspond pas
+      break; // Pas besoin de continuer
+  }
+}
 
     if (allAppliancesIncluded) {
       r.push(recipe);
@@ -368,11 +386,23 @@ function filterByUtensils(recipeList) {
   for (let i = 0; i < recipeList.length; i++) {
     const recipe = recipeList[i];
 
-    const allUtensilsIncluded = selectedUtensilsList.every(selectedUtensil => {
-      return recipe.ustensils.some(utensil => {
-        return utensil.toLowerCase() === selectedUtensil;
-      });
-    });
+
+let allUtensilsIncluded = true;
+
+for (let i = 0; i < selectedUtensilsList.length; i++) {
+  let found = false;
+  for (let j = 0; j < recipe.ustensils.length; j++) {
+    if (recipe.ustensils[j].toLowerCase() === selectedUtensilsList[i]) {
+      found = true; 
+      break;
+    }
+  }
+  
+  if (!found) {
+    allUtensilsIncluded = false;
+    break;
+  }
+}
 
     if (allUtensilsIncluded) {
       r.push(recipe);
@@ -387,14 +417,38 @@ function filterList(dropdownSearchInput, index) {
   const div = document.querySelectorAll(".dropdown-content")[index];
   const a = div.getElementsByTagName("a");
 
+  // for (let i = 0; i < a.length; i++) {
+  //   let txtValue = a[i].textContent || a[i].innerText;
+  //   if (txtValue.toUpperCase().includes(filter)) {
+  //     a[i].style.display = "";
+  //   } else {
+  //     a[i].style.display = "none";
+  //   }
+  // }
+
+  // Parcourt chaque élément et affiche/masque selon le filtre
   for (let i = 0; i < a.length; i++) {
-    let txtValue = a[i].textContent || a[i].innerText;
-    if (txtValue.toUpperCase().includes(filter)) {
-      a[i].style.display = "";
-    } else {
-      a[i].style.display = "none";
-    }
+    let txtValue = (a[i].textContent || a[i].innerText).toUpperCase();
+    let match = false;
+
+    // Recherche manuelle du filtre dans txtValue
+    for (let j = 0; j <= txtValue.length - filter.length; j++) {
+      let found = true;
+      for (let k = 0; k < filter.length; k++) {
+        if (txtValue[j + k] !== filter[k]) {
+          found = false;
+          break;
+        }
+      }
+      if (found) {
+        match = true;
+        break;
+      }
   }
+
+  a[i].style.display = match ? "" : "none";
+}
+
 }
 
 function ingredientsDropdownFill(uniqueIngredients) {
