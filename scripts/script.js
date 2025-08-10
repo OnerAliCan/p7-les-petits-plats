@@ -187,6 +187,8 @@ function mainSearch() {
   return recipeList;
 }
 
+
+
 function filterBySearch(recipeList, searchInput) {
   const r = [];
   const searchValue = searchInput.value.toLowerCase();
@@ -195,25 +197,50 @@ function filterBySearch(recipeList, searchInput) {
     const recipe = recipeList[i];
     let ingredientName;
 
-    if (
-      recipe.name.toLowerCase().includes(searchValue) ||
-      recipe.description.toLowerCase().includes(searchValue)
-    ) {
+    // Vérifie dans name ou description
+    let found = false;
+    let fields = [recipe.name, recipe.description];
+    for (let f = 0; f < fields.length && !found; f++) {
+      let str = fields[f].toLowerCase();
+      for (let a = 0; a <= str.length - searchValue.length && !found; a++) {
+        let match = true;
+        for (let b = 0; b < searchValue.length; b++) {
+          if (str[a + b] !== searchValue[b]) {
+            match = false;
+            break;
+          }
+        }
+        if (match) found = true;
+      }
+    }
+    if (found) {
       r.push(recipe);
       continue;
     }
 
-    for (let j = 0; j < recipe.ingredients.length; j++) {
-      ingredientName = recipe.ingredients[j].ingredient;
-
-      if (ingredientName.toLowerCase().includes(searchValue)) {
-        r.push(recipe);
-        break;
+    // Vérifie dans les ingrédients
+    for (let j = 0; j < recipe.ingredients.length && !found; j++) {
+      ingredientName = recipe.ingredients[j].ingredient.toLowerCase();
+      for (let a = 0; a <= ingredientName.length - searchValue.length; a++) {
+        let match = true;
+        for (let b = 0; b < searchValue.length; b++) {
+          if (ingredientName[a + b] !== searchValue[b]) {
+            match = false;
+            break;
+          }
+        }
+        if (match) {
+          r.push(recipe);
+          found = true;
+          break;
+        }
       }
     }
   }
   return r;
 }
+
+
 function getInitialIngredientsList() {
   let recipeList = [...recipes];
   const ingredientArray = [];
@@ -417,14 +444,7 @@ function filterList(dropdownSearchInput, index) {
   const div = document.querySelectorAll(".dropdown-content")[index];
   const a = div.getElementsByTagName("a");
 
-  // for (let i = 0; i < a.length; i++) {
-  //   let txtValue = a[i].textContent || a[i].innerText;
-  //   if (txtValue.toUpperCase().includes(filter)) {
-  //     a[i].style.display = "";
-  //   } else {
-  //     a[i].style.display = "none";
-  //   }
-  // }
+
 
   // Parcourt chaque élément et affiche/masque selon le filtre
   for (let i = 0; i < a.length; i++) {
@@ -454,6 +474,7 @@ function filterList(dropdownSearchInput, index) {
 function ingredientsDropdownFill(uniqueIngredients) {
   const children = document.getElementById("selected-ingredients").children;
   const selectedIngredients = [];
+
   for (let i = 0; i < children.length; i++) {
     selectedIngredients.push(children[i].textContent);
   }
@@ -463,10 +484,18 @@ function ingredientsDropdownFill(uniqueIngredients) {
   for (let i = 0; i < uniqueIngredients.length; i++) {
     const uniqueIngredient = uniqueIngredients[i];
 
-    if (!selectedIngredients.includes(uniqueIngredient)) {
+    let found = false;
+    for (let j = 0; j < selectedIngredients.length; j++) {
+      if (selectedIngredients[j] === uniqueIngredient) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
       filteredUniqueElementNames.push(uniqueIngredient);
     }
   }
+  
 
   let uniqueElementName;
   const ingredientsDropdownItemTemplate = document.getElementById(
@@ -530,7 +559,14 @@ function appliancesDropdownFill(appliances) {
   for (let i = 0; i < appliances.length; i++) {
     const appliance = appliances[i];
 
-    if (!selectedAppliances.includes(appliance)) {
+    let found = false;
+    for (let j = 0; j < selectedAppliances.length; j++) {
+      if (selectedAppliances[j] === appliance) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
       filteredUniqueElementNames.push(appliance);
     }
   }
@@ -597,7 +633,14 @@ function utensilsDropdownFill(utensils) {
   for (let i = 0; i < utensils.length; i++) {
     const utensil = utensils[i];
 
-    if (!selectedUtensils.includes(utensil)) {
+    let found = false;
+    for (let j = 0; j < selectedUtensils.length; j++) {
+      if (selectedUtensils[j] === utensil) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
       filteredUniqueElementNames.push(utensil);
     }
   }
