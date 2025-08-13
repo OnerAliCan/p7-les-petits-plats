@@ -190,55 +190,81 @@ function mainSearch() {
 
 
 function filterBySearch(recipeList, searchInput) {
-  const r = [];
+  const result = [];
   const searchValue = searchInput.value.toLowerCase();
 
   for (let i = 0; i < recipeList.length; i++) {
     const recipe = recipeList[i];
-    let ingredientName;
-
-    // Vérifie dans name ou description
     let found = false;
-    let fields = [recipe.name, recipe.description];
-    for (let f = 0; f < fields.length && !found; f++) {
-      let str = fields[f].toLowerCase();
-      for (let a = 0; a <= str.length - searchValue.length && !found; a++) {
-        let match = true;
-        for (let b = 0; b < searchValue.length; b++) {
-          if (str[a + b] !== searchValue[b]) {
-            match = false;
-            break;
-          }
-        }
-        if (match) found = true;
-      }
-    }
-    if (found) {
-      r.push(recipe);
-      continue;
-    }
 
-    // Vérifie dans les ingrédients
-    for (let j = 0; j < recipe.ingredients.length && !found; j++) {
-      ingredientName = recipe.ingredients[j].ingredient.toLowerCase();
-      for (let a = 0; a <= ingredientName.length - searchValue.length; a++) {
+    // Cherche dans le nom
+    if (recipe.name) {
+      const nameLower = recipe.name.toLowerCase();
+      for (let a = 0; a <= nameLower.length - searchValue.length; a++) {
         let match = true;
         for (let b = 0; b < searchValue.length; b++) {
-          if (ingredientName[a + b] !== searchValue[b]) {
+          if (nameLower[a + b] !== searchValue[b]) {
             match = false;
             break;
           }
         }
         if (match) {
-          r.push(recipe);
           found = true;
           break;
         }
       }
     }
+
+    // Cherche dans la description si pas encore trouvé
+    if (!found && recipe.description) {
+      const descLower = recipe.description.toLowerCase();
+      for (let a = 0; a <= descLower.length - searchValue.length; a++) {
+        let match = true;
+        for (let b = 0; b < searchValue.length; b++) {
+          if (descLower[a + b] !== searchValue[b]) {
+            match = false;
+            break;
+          }
+        }
+        if (match) {
+          found = true;
+          break;
+        }
+      }
+    }
+
+    // Cherche dans les ingrédients si pas encore trouvé
+    if (!found && recipe.ingredients) {
+      for (let j = 0; j < recipe.ingredients.length; j++) {
+        const ingredient = recipe.ingredients[j];
+        if (ingredient.ingredient) {
+          const ingLower = ingredient.ingredient.toLowerCase();
+          for (let a = 0; a <= ingLower.length - searchValue.length; a++) {
+            let match = true;
+            for (let b = 0; b < searchValue.length; b++) {
+              if (ingLower[a + b] !== searchValue[b]) {
+                match = false;
+                break;
+              }
+            }
+            if (match) {
+              found = true;
+              break;
+            }
+          }
+        }
+        if (found) break;
+      }
+    }
+
+    if (found) {
+      result.push(recipe);
+    }
   }
-  return r;
+
+  return result;
 }
+
 
 
 function getInitialIngredientsList() {
