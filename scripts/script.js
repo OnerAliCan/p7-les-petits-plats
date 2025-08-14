@@ -39,6 +39,8 @@ function setEvents() {
         !dropdownButtons[i].contains(event.target)
       ) {
         dropdownContent.classList.remove("show");
+        dropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+        dropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
       }
     });
   });
@@ -61,14 +63,20 @@ function setEvents() {
 
   searchInput.addEventListener("focus", function () {
     ingredientsDropdownContent.classList.remove("show");
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
   });
 
   searchInput.addEventListener("focus", function () {
     appliancesDropdownContent.classList.remove("show");
+    appliancesDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    appliancesDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
   });
 
   searchInput.addEventListener("focus", function () {
     utensilsDropdownContent.classList.remove("show");
+    utensilsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    utensilsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
   });
 
   // main bar input search and dropdown click reset call
@@ -191,6 +199,7 @@ function mainSearch() {
 function filterBySearch(recipeList, searchInput) {
   const r = [];
   const searchValue = searchInput.value.toLowerCase();
+    // Cherche dans le nom et la description
 
   recipeList.forEach(recipe => {
     let ingredientName;
@@ -202,6 +211,7 @@ function filterBySearch(recipeList, searchInput) {
       r.push(recipe);
       return;
     }
+      // Cherche dans les ingrédients si pas encore trouvé
 
     recipe.ingredients.forEach(ingredient => {
       ingredientName = ingredient.ingredient;
@@ -214,6 +224,8 @@ function filterBySearch(recipeList, searchInput) {
   });
   return r;
 }
+
+  // récupérer la liste initiale unique de tous les élements à partir de toutes les recettes
 function getInitialIngredientsList() {
   let recipeList = [...recipes];
   const ingredientArray = [];
@@ -258,6 +270,7 @@ function getInitialUtensilsList() {
   return uniqueUtensilsArray;
 }
 
+// mettre à jour la liste unique des ingrédients avec la liste de recettes filtrée
 function updateIngredientsList(recipeList) {
   let updatedIngredientArray = [];
 
@@ -300,6 +313,7 @@ function updateUtensilsList(recipeList) {
   return updatedUniqueUtensils;
 }
 
+// filtrer les recettes pour ne garder que celles contenant tous les éléments sélectionnés dans l'interface
 function filterByIngredients(recipeList) {
   let r = [];
   const children = document.getElementById("selected-ingredients").children;
@@ -371,10 +385,11 @@ function filterByUtensils(recipeList) {
   return r;
 }
 
+// Filtre les éléments d'une liste déroulante en fonction du texte saisi dans la barre de recherche correspondante
 function filterList(dropdownSearchInput) {
   const filter = dropdownSearchInput.value.toUpperCase();
   const a = document.querySelectorAll(".item-dropdown");
-
+//on transforme la nodelist a en tableau pour itérer dessus avec foreach
   Object.values(a).forEach(aElement => {
     let txtValue = aElement.textContent || aElement.innerText;
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -385,6 +400,8 @@ function filterList(dropdownSearchInput) {
   });
 }
 
+  // Remplit les dropdowns avec les éléments disponibles 
+  // et reset les événements pour clics et recherche
 function ingredientsDropdownFill(uniqueIngredients) {
   const children = document.getElementById("selected-ingredients").children;
   const selectedIngredients = [];
@@ -564,15 +581,14 @@ function utensilsDropdownFill(utensils) {
   return selectedUtensils;
 }
 
+// Gère le clic sur un élément dans le dropdown : sélectionne l'élément, relance la recherche et recharge le menu
 function handleIngredientClick(event) {
   const selectedClick = event.target;
   const selectedClickText = selectedClick.textContent;
-
-  // createChips(selectedClick, selectedClickText);
-
   selectedClick.parentElement.parentElement.classList.remove("show");
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomLeftRadius = '11px';
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomRightRadius = '11px';
   selectIngredientItem(selectedClick, selectedClickText);
-
   mainSearch();
   ingredientsDropdownFill(uniqueIngredients);
 }
@@ -580,10 +596,9 @@ function handleIngredientClick(event) {
 function handleApplianceClick(event) {
   const selectedClick = event.target;
   const selectedClickText = selectedClick.textContent;
-
-  // createChips(selectedClick, selectedClickText);
-
   selectedClick.parentElement.parentElement.classList.remove("show");
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomLeftRadius = '11px';
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomRightRadius = '11px';
   selectApplianceItem(selectedClick, selectedClickText);
   mainSearch();
 
@@ -593,39 +608,52 @@ function handleApplianceClick(event) {
 function handleUtensilClick(event) {
   const selectedClick = event.target;
   const selectedClickText = selectedClick.textContent;
-
-  // createChips(selectedClick, selectedClickText);
-
   selectedClick.parentElement.parentElement.classList.remove("show");
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomLeftRadius = '11px';
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomRightRadius = '11px';
   selectUtensilItem(selectedClick, selectedClickText);
   mainSearch();
   utensilsDropdownFill(utensils);
 }
 
+// Affiche ou masque le contenu des dropdowns
 function ingredientsDropdownToggle(ingredientsDropdownContent) {
   if (ingredientsDropdownContent.classList.contains("show")) {
     ingredientsDropdownContent.classList.remove("show");
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
   } else {
     ingredientsDropdownContent.classList.add("show");
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '0';
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '0';
   }
 }
 
 function appliancesDropdownToggle(appliancesDropdownContent) {
   if (appliancesDropdownContent.classList.contains("show")) {
     appliancesDropdownContent.classList.remove("show");
+    appliancesDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    appliancesDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
   } else {
     appliancesDropdownContent.classList.add("show");
+    appliancesDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '0';
+    appliancesDropdownContent.previousElementSibling.style.borderBottomRightRadius = '0';
   }
 }
 
 function utensilsDropdownToggle(utensilsDropdownContent) {
   if (utensilsDropdownContent.classList.contains("show")) {
     utensilsDropdownContent.classList.remove("show");
+    utensilsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    utensilsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
   } else {
     utensilsDropdownContent.classList.add("show");
+    utensilsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '0';
+    utensilsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '0';
   }
 }
 
+// Ajoute un élément sélectionné depuis le dropdown dans la liste des éléments sélectionnés et crée une chip correspondante
 function selectIngredientItem(selectedClick, selectedClickText) {
   // changer la div sur le dropdown
   const selectedIngredientsDiv = document.getElementById(
@@ -764,6 +792,7 @@ function selectUtensilItem(selectedClick, selectedClickText) {
   });
 }
 
+// Retire un élément du dropdown correspondant
 function removeIngredientFromDropdown(label) {
   const c = document.getElementById("selected-ingredients");
 
@@ -795,7 +824,7 @@ function removeUtensilFromDropdown(label) {
     }
   });
 }
-
+//suppression des chips
 function removeChips(label) {
   const c = document.getElementById("chips-container-id");
 
@@ -807,6 +836,7 @@ function removeChips(label) {
   });
 }
 
+//reset du dropdown input
 function clearInput(index) {
   const input = document.querySelectorAll(".dropdown-search")[index];
   input.value = "";
@@ -814,6 +844,7 @@ function clearInput(index) {
   filterList(input);
 }
 
+// Affiche la liste des recettes
 function displayRecipes(recipeList) {
   const recipeListLengthDisplay = document.querySelector(".recipe-length");
 
@@ -864,7 +895,7 @@ function displayRecipes(recipeList) {
     recipeSection.appendChild(recipeTemplateClone);
   });
 }
-
+// Affiche un message indiquant qu’aucune recette ne correspond à la recherche
 function displayNoRecipes(recipeList, searchInputValue) {
   const recipeListLengthDisplay = document.querySelector(".recipe-length");
 
