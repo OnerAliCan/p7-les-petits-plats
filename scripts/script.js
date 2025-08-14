@@ -38,6 +38,8 @@ function setEvents() {
         !dropdownButtons[i].contains(event.target)
       ) {
         dropdownContents[i].classList.remove("show");
+        dropdownContents[i].previousElementSibling.style.borderBottomLeftRadius = '11px';
+        dropdownContents[i].previousElementSibling.style.borderBottomRightRadius = '11px';
       }
     }
   });
@@ -60,14 +62,20 @@ function setEvents() {
 
   searchInput.addEventListener("focus", function () {
     ingredientsDropdownContent.classList.remove("show");
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
   });
 
   searchInput.addEventListener("focus", function () {
     appliancesDropdownContent.classList.remove("show");
+    appliancesDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    appliancesDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
   });
 
   searchInput.addEventListener("focus", function () {
     utensilsDropdownContent.classList.remove("show");
+    utensilsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    utensilsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
   });
 
   // main bar input search and dropdown click reset call
@@ -721,8 +729,9 @@ function utensilsDropdownFill(utensils) {
 function handleIngredientClick(event) {
   const selectedClick = event.target;
   const selectedClickText = selectedClick.textContent;
-
   selectedClick.parentElement.parentElement.classList.remove("show");
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomLeftRadius = '11px';
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomRightRadius = '11px';
   selectIngredientItem(selectedClick, selectedClickText);
   mainSearch();
   ingredientsDropdownFill(uniqueIngredients);
@@ -731,19 +740,20 @@ function handleIngredientClick(event) {
 function handleApplianceClick(event) {
   const selectedClick = event.target;
   const selectedClickText = selectedClick.textContent;
-
   selectedClick.parentElement.parentElement.classList.remove("show");
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomLeftRadius = '11px';
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomRightRadius = '11px';
   selectApplianceItem(selectedClick, selectedClickText);
   mainSearch();
-
   appliancesDropdownFill(appliances);
 }
 
 function handleUtensilClick(event) {
   const selectedClick = event.target;
   const selectedClickText = selectedClick.textContent;
-
   selectedClick.parentElement.parentElement.classList.remove("show");
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomLeftRadius = '11px';
+  selectedClick.parentElement.parentElement.previousElementSibling.style.borderBottomRightRadius = '11px';
   selectUtensilItem(selectedClick, selectedClickText);
   mainSearch();
   utensilsDropdownFill(utensils);
@@ -753,25 +763,37 @@ function handleUtensilClick(event) {
 function ingredientsDropdownToggle(ingredientsDropdownContent) {
   if (ingredientsDropdownContent.classList.contains("show")) {
     ingredientsDropdownContent.classList.remove("show");
-  } else {
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
+ } else {
     ingredientsDropdownContent.classList.add("show");
-  }
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '0';
+    ingredientsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '0';
+ }
 }
 
 function appliancesDropdownToggle(appliancesDropdownContent) {
   if (appliancesDropdownContent.classList.contains("show")) {
     appliancesDropdownContent.classList.remove("show");
+    appliancesDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    appliancesDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
   } else {
     appliancesDropdownContent.classList.add("show");
+    appliancesDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '0';
+    appliancesDropdownContent.previousElementSibling.style.borderBottomRightRadius = '0';
   }
 }
 
 function utensilsDropdownToggle(utensilsDropdownContent) {
   if (utensilsDropdownContent.classList.contains("show")) {
     utensilsDropdownContent.classList.remove("show");
-  } else {
+    utensilsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '11px';
+    utensilsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '11px';
+ } else {
     utensilsDropdownContent.classList.add("show");
-  }
+    utensilsDropdownContent.previousElementSibling.style.borderBottomLeftRadius = '0';
+    utensilsDropdownContent.previousElementSibling.style.borderBottomRightRadius = '0';
+ }
 }
 
 // Ajoute un élément sélectionné depuis le dropdown dans la liste des éléments sélectionnés et crée une chip correspondante
