@@ -340,15 +340,20 @@ header {
   line-height: 16px;
   color: #7a7a7a;
 }
+.recipe-section .recipe-card .recipe-text-container .recipe-ingredients-container .recipe-container {
+  height: 107px;
+  overflow: hidden;
+}
+.recipe-section .recipe-card .recipe-text-container .recipe-ingredients-container .recipe-container #recipe-steps {
+  margin: 15px 0 0 0;
+}
 .recipe-section .recipe-card .recipe-text-container .recipe-ingredients-container p {
   margin: 0;
   font-family: Manrope;
   font-size: 14px;
   font-weight: 400;
   line-height: 19px;
-}
-.recipe-section .recipe-card .recipe-text-container .recipe-ingredients-container #recipe-steps {
-  margin: 15px 0 0 0;
+  text-overflow: ellipsis;
 }
 .recipe-section .recipe-card .recipe-text-container .recipe-ingredients-container .ingredients-container {
   margin-top: 32px;

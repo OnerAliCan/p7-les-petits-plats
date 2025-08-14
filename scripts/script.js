@@ -266,7 +266,7 @@ function filterBySearch(recipeList, searchInput) {
 }
 
 
-
+// récupérer la liste initiale unique de tous les élements à partir de toutes les recettes
 function getInitialIngredientsList() {
   let recipeList = [...recipes];
   const ingredientArray = [];
@@ -310,6 +310,7 @@ function getInitialUtensilsList() {
   return uniqueUtensilsArray;
 }
 
+// mettre à jour la liste unique des ingrédients avec la liste de recettes filtrée
 function updateIngredientsList(recipeList) {
   let updatedIngredientArray = [];
 
@@ -356,7 +357,7 @@ function updateUtensilsList(recipeList) {
 
   return updatedUniqueUtensils;
 }
-
+// filtrer les recettes pour ne garder que celles contenant tous les éléments sélectionnés dans l'interface
 function filterByIngredients(recipeList) {
   let r = [];
   const children = document.getElementById("selected-ingredients").children;
@@ -371,10 +372,10 @@ function filterByIngredients(recipeList) {
 
     let allIngredientsIncluded = true;
 
-  for (let i = 0; i < selectedIngredientsList.length; i++) {
+  for (let j = 0; j < selectedIngredientsList.length; j++) {
     let found = false;
-    for (let j = 0; j < recipe.ingredients.length; j++) {
-      if (recipe.ingredients[j].ingredient.toLowerCase() === selectedIngredientsList[i]) {
+    for (let k = 0; k < recipe.ingredients.length; k++) {
+      if (recipe.ingredients[k].ingredient.toLowerCase() === selectedIngredientsList[i]) {
         found = true;
         break;
       }
@@ -403,20 +404,13 @@ function filterByAppliances(recipeList) {
   for (let i = 0; i < recipeList.length; i++) {
     const recipe = recipeList[i];
 
-    // const allAppliancesIncluded = selectedAppliancesList.every(
-    //   selectedAppliance => {
-    //     return recipe.appliance.toLowerCase() === selectedAppliance;
-    //   }
-    // );
 
-    // On suppose que tous les appareils sélectionnés sont présents
   let allAppliancesIncluded = true;
 
-// Parcourt chaque appareil sélectionné
   for (let i = 0; i < selectedAppliancesList.length; i++) {
     if (recipe.appliance.toLowerCase() !== selectedAppliancesList[i]) {
-      allAppliancesIncluded = false; // L'appareil ne correspond pas
-      break; // Pas besoin de continuer
+      allAppliancesIncluded = false;
+      break;
   }
 }
 
@@ -438,33 +432,31 @@ function filterByUtensils(recipeList) {
 
   for (let i = 0; i < recipeList.length; i++) {
     const recipe = recipeList[i];
+    let allUtensilsIncluded = true;
 
-
-let allUtensilsIncluded = true;
-
-for (let i = 0; i < selectedUtensilsList.length; i++) {
-  let found = false;
-  for (let j = 0; j < recipe.ustensils.length; j++) {
-    if (recipe.ustensils[j].toLowerCase() === selectedUtensilsList[i]) {
-      found = true; 
-      break;
+    for (let i = 0; i < selectedUtensilsList.length; i++) {
+      let found = false;
+      for (let j = 0; j < recipe.ustensils.length; j++) {
+        if (recipe.ustensils[j].toLowerCase() === selectedUtensilsList[i]) {
+          found = true; 
+          break;
+        }
+      }
+      
+      if (!found) {
+        allUtensilsIncluded = false;
+        break;
+      }
     }
-  }
-  
-  if (!found) {
-    allUtensilsIncluded = false;
-    break;
-  }
-}
 
     if (allUtensilsIncluded) {
       r.push(recipe);
     }
   }
-
   return r;
 }
 
+// Filtre les éléments d'une liste déroulante en fonction du texte saisi dans la barre de recherche correspondante
 function filterList(dropdownSearchInput, index) {
   const filter = dropdownSearchInput.value.toUpperCase();
   const div = document.querySelectorAll(".dropdown-content")[index];
@@ -497,6 +489,8 @@ function filterList(dropdownSearchInput, index) {
 
 }
 
+// Remplit les dropdowns avec les éléments disponibles 
+// et reset les événements pour clics et recherche
 function ingredientsDropdownFill(uniqueIngredients) {
   const children = document.getElementById("selected-ingredients").children;
   const selectedIngredients = [];
@@ -723,13 +717,13 @@ function utensilsDropdownFill(utensils) {
   return selectedUtensils;
 }
 
+// Gère le clic sur un élément dans le dropdown : sélectionne l'élément, relance la recherche et recharge le menu
 function handleIngredientClick(event) {
   const selectedClick = event.target;
   const selectedClickText = selectedClick.textContent;
 
   selectedClick.parentElement.parentElement.classList.remove("show");
   selectIngredientItem(selectedClick, selectedClickText);
-
   mainSearch();
   ingredientsDropdownFill(uniqueIngredients);
 }
@@ -755,6 +749,7 @@ function handleUtensilClick(event) {
   utensilsDropdownFill(utensils);
 }
 
+// Affiche ou masque le contenu des dropdowns
 function ingredientsDropdownToggle(ingredientsDropdownContent) {
   if (ingredientsDropdownContent.classList.contains("show")) {
     ingredientsDropdownContent.classList.remove("show");
@@ -779,6 +774,7 @@ function utensilsDropdownToggle(utensilsDropdownContent) {
   }
 }
 
+// Ajoute un élément sélectionné depuis le dropdown dans la liste des éléments sélectionnés et crée une chip correspondante
 function selectIngredientItem(selectedClick, selectedClickText) {
   // changer la div sur le dropdown
   const selectedIngredientsDiv = document.getElementById(
@@ -925,6 +921,7 @@ function selectUtensilItem(selectedClick, selectedClickText) {
   });
 }
 
+// Retire un élément du dropdown correspondant
 function removeIngredientFromDropdown(label) {
   const c = document.getElementById("selected-ingredients");
   for (let i = 0; i < c.children.length; i++) {
@@ -955,6 +952,7 @@ function removeUtensilFromDropdown(label) {
   }
 }
 
+//suppression des "chips"
 function removeChips(label) {
   const c = document.getElementById("chips-container-id");
   for (let i = 0; i < c.children.length; i++) {
@@ -965,6 +963,7 @@ function removeChips(label) {
   }
 }
 
+//reset du dropdown input
 function clearInput(index) {
   const input = document.querySelectorAll(".dropdown-search")[index];
   input.value = "";
@@ -972,6 +971,7 @@ function clearInput(index) {
   filterList(input, index);
 }
 
+// Affiche la liste des recettes
 function displayRecipes(recipeList) {
   const recipeListLengthDisplay = document.querySelector(".recipe-length");
 
@@ -1027,6 +1027,7 @@ function displayRecipes(recipeList) {
   }
 }
 
+// Affiche un message indiquant qu’aucune recette ne correspond à la recherche
 function displayNoRecipes(recipeList, searchInputValue) {
   const recipeListLengthDisplay = document.querySelector(".recipe-length");
 

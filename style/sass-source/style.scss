@@ -376,6 +376,14 @@ header {
           line-height: 16px;
           color: #7a7a7a;
         }
+        .recipe-container {
+          height: 107px;
+          overflow: hidden; 
+  
+          #recipe-steps {
+            margin: 15px 0 0 0;
+          }
+        }
 
         p {
           margin: 0;
@@ -383,12 +391,8 @@ header {
           font-size: 14px;
           font-weight: 400;
           line-height: 19px;
+          text-overflow: ellipsis;
         }
-
-        #recipe-steps {
-          margin: 15px 0 0 0;
-        }
-
         .ingredients-container {
           margin-top: 32px;
           display: flex;
