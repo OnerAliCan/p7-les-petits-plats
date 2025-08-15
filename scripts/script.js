@@ -419,8 +419,8 @@ function filterByAppliances(recipeList) {
     if (recipe.appliance.toLowerCase() !== selectedAppliancesList[i]) {
       allAppliancesIncluded = false;
       break;
+    }
   }
-}
 
     if (allAppliancesIncluded) {
       r.push(recipe);
