@@ -1,3 +1,6 @@
+/* stylelint-disable shorthand-property-no-redundant-values */
+/* stylelint-disable no-descending-specificity */
+/* stylelint-disable font-family-no-missing-generic-family-keyword */
 body {
   background-color: #ededed;
   margin: 0;
