@@ -383,7 +383,7 @@ function filterByIngredients(recipeList) {
   for (let j = 0; j < selectedIngredientsList.length; j++) {
     let found = false;
     for (let k = 0; k < recipe.ingredients.length; k++) {
-      if (recipe.ingredients[k].ingredient.toLowerCase() === selectedIngredientsList[i]) {
+      if (recipe.ingredients[k].ingredient.toLowerCase() === selectedIngredientsList[j]) {
         found = true;
         break;
       }
